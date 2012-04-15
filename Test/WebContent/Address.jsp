@@ -8,11 +8,14 @@
 <%
 session.setAttribute("residence", residenceCountry);
 %>
+
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
-Citizenship: <%=session.getAttribute("ciztizenship") %> </br>
+Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=residenceCountry%> </br>
+
+
 <% session.setAttribute("residence", residenceCountry); %>
 
 <% 
