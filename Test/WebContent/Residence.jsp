@@ -26,11 +26,13 @@ Citizenship: <%=country%> </br>
     
    <table border="1">
 	<% for(int i=0; i<countries.size()/3; i++) {
-		String c = (String)countries.get(i); %>
+		String c_1 = (String)countries.get(i); 
+		String c_2 = (String)countries.get(countries.size()/3 + i);
+		String c_3 = (String)countries.get(2 * countries.size()/3 + i); %>
 		<tr>
-      	<td><a href="Address.jsp?country=<%=c%>"><%=countries.get(i) %></a><br></td>
-      	<td><a href="Address.jsp?country=<%=c%>"><%=countries.get(countries.size()/3 + i)%></a><br></td>
-      	<td><a href="Address.jsp?country=<%=c%>"><%=countries.get(2 * countries.size()/3 + i)%></a><br></td>
+      	<td><a href="Address.jsp?country=<%=c_1%>"><%=countries.get(i) %></a><br></td>
+      	<td><a href="Address.jsp?country=<%=c_2%>"><%=countries.get(countries.size()/3 + i)%></a><br></td>
+      	<td><a href="Address.jsp?country=<%=c_3%>"><%=countries.get(2 * countries.size()/3 + i)%></a><br></td>
       	</tr>
      <% 
      } 
