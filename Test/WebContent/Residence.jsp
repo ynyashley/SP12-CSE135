@@ -6,7 +6,14 @@
 </head>
 <body>
 <% String country = request.getParameter("country"); %>
-Citizenship: <%=country%>
+
+<%
+session.setAttribute("citizenship", country);
+%>
+First Name: <%=session.getAttribute("first") %> </br >
+Middle: <%=session.getAttribute("middle") %> </br>
+Last Name: <%=session.getAttribute("last") %> </br>
+Citizenship: <%=country%> </br>
 <br>
 <a href="Address.jsp?country=<%=country%>">Same as country of citizenship</a><br>
 	<% 

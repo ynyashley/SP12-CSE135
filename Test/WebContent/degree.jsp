@@ -4,6 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 </head>
+First Name: <%=session.getAttribute("first") %> </br >
+Middle Initial: <%=session.getAttribute("middle") %> </br>
+Last Name: <%=session.getAttribute("last") %> </br> 
+
 <body>
  <% 
    	support s = new support();   	
