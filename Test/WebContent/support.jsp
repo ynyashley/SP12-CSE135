@@ -48,7 +48,7 @@
             Vector u = (Vector)tuple.get(1);
             for(int j=0; j<u.size(); j++){%>
               <%=u.get(j)%><br>
-      <%}
+          <%}
     } 
     
   %>

@@ -9,7 +9,7 @@
 	<form action="Citizenship.jsp" method="POST">
 	First name: <input type="text" name="first" /><br />
 	Middle Initial: <input type="text" name="middle" /><br />
-	Last name: <input type="text" name="last" />
+	Last name: <input type="text" name="last" /> <br />
 	<input type = "submit" name = "action" value = "submit" />
 	</form>
 
