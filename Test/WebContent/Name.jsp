@@ -5,14 +5,13 @@
 </head>
 <body>
 	<!-- Initialize Applicant with first name, last name, middle name -->
-	<% String action = request.getParameter("action"); %>
-	<% if(action != null && action.equals("submit"))
-	{
-		Applicant newApplicant = new Applicant();
-		
-		newApplicant.setFirstName(request.getParameter("first"));
-		newApplicant.setMiddleName(request.getParameter("middle"));
-		newApplicant.setLastName(request.getParameter("last"));
-	} %>
+	<p> Please enter your information: </p>
+	<form action="Citizenship.jsp" method="POST">
+	First name: <input type="text" name="first" /><br />
+	Middle Initial: <input type="text" name="middle" /><br />
+	Last name: <input type="text" name="last" />
+	<input type = "submit" name = "action" value = "submit" />
+	</form>
+
 </body>
 </html>
