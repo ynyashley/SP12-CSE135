@@ -24,9 +24,9 @@ Country of Residence: <%=residenceCountry%> </br>
     <form action="degree.jsp" method="POST">
 		Address: <input type="text" name="address" /><br />
 		State: <input type="text" name="state" /><br />
-		Zip: <input type="text" name="zip" size="5" maxlength="5"/> <br />
+		Zip: <input type="text" name="zip" size="5" /> <br />
 		City: <input type="text" name="city" /><br />
-		Area Code: <input type="text" name="areaCode" /><br />
+		Area Code: <input type="text" name="areaCode" size="3"><br />
 
 		<input type = "submit" name = "action" value = "submit" />
 	</form>
@@ -35,11 +35,10 @@ Country of Residence: <%=residenceCountry%> </br>
 	else {
 	%>
 	<form action="degree.jsp" method="POST">
-		address: <input type="text" name="address" /><br />
-		Country Tel code: <input type="text" name="countryTelCode" /><br />
-		Zip: <input type="text" name="zip" /> <br />
+		Address: <input type="text" name="address" /><br />
+		Country Telephone code: <input type="text" name="countryTelCode"  /><br />
+		Zip: <input type="text" name="zip" size="5" maxlength="5"/> <br />
 		City: <input type="text" name="city" /><br />
-		Area Code: <input type="text" name="areaCode" /><br />
 
 		<input type = "submit" name = "action" value = "submit" />
 	</form>
