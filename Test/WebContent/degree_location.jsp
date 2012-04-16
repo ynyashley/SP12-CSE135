@@ -36,29 +36,57 @@ else{ %>
 State: <%=state1 %>
 <%} %>
 
-
 <body>
- <% 
+<p>
+Please choose your school location.
+<p>
+States in United States :
+<p>
+<% 
    	support s = new support();   	
-   	
-   	String path1 = config.getServletContext().getRealPath("universities.txt");
-	
-    //getCountries returns a vector of the countries to be used for choosing university
-    Vector universities = s.getUniversities(path1); 
-  %>  	
-   <%
-    for (int i=0; i<universities.size(); i++){
-      //each entry in the universities vector is a tuple with the first entry being the country/state
-      //and the second entry being a vector of the universities as String's
-      Vector tuple = (Vector)universities.get(i);
-      String state = (String)tuple.get(0);
-      out.println("<br>"+state+"<br>");    
-            Vector u = (Vector)tuple.get(1);
-            for(int j=0; j<u.size(); j++){%>
-              <%=u.get(j)%><br>
-          <%}
-    } 
-    
-  %>
+   	String path2 = config.getServletContext().getRealPath("universities.txt");
+   	Vector universities = s.getUniversities(path2); 
+%>
+<table border="1">
+<%
+		for (int i = 0; i < 51; i++) {
+			Vector universityList = (Vector)universities.get(i);
+			String state = (String)universityList.get(0);
+			%>
+			
+			<td><a href="university.jsp?location=<%=state%>"><%=state%></a></td>
+			<%
+			if( (i+1)%3 == 0) { %>
+				<tr>
+		<%	}
+ 	}
+%>
+</table>
+
+<p>
+Other Country :
+<p>
+<% 
+ 	
+   	String path3 = config.getServletContext().getRealPath("universities.txt");
+   	Vector universities_country = s.getUniversities(path3); 
+%>
+<table border="1">
+<%
+		for (int i = 0; i < universities.size(); i++) {
+			Vector universityList = (Vector)universities_country.get(i);
+			String country = (String)universityList.get(0);
+			%>
+			<% if ( i >= 51) { %>
+			       <td><a href="university.jsp?location=<%=country%>"><%=country%></a></td>
+			<% }
+			if(  ( (i+1)%3 == 0) && (i >= 51)){ %>
+				<tr>
+		<%	}
+ 	}
+%>
+</table>
+
+<p>
 </body>
 </html>

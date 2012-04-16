@@ -21,7 +21,7 @@ Country of Residence: <%=residenceCountry%> </br>
 <% 
 	if (residenceCountry.equals("United States") ){
 %>		
-    <form action="degree.jsp" method="POST">
+    <form action="degree_location.jsp" method="POST">
 		Address: <input type="text" name="address" /><br />
 		State: <input type="text" name="state" /><br />
 		Zip: <input type="text" name="zip" size="5" /> <br />
@@ -34,7 +34,7 @@ Country of Residence: <%=residenceCountry%> </br>
 	}
 	else {
 	%>
-	<form action="degree.jsp" method="POST">
+	<form action="degree_location.jsp" method="POST">
 		Address: <input type="text" name="address" /><br />
 		Country Telephone code: <input type="text" name="countryTelCode"  /><br />
 		Zip: <input type="text" name="zip" size="5" maxlength="5"/> <br />
