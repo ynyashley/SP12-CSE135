@@ -22,9 +22,9 @@ Country of Residence: <%=residenceCountry%> </br>
 	if (residenceCountry.equals("United States") ){
 %>		
     <form action="degree.jsp" method="POST">
-		address: <input type="text" name="address" /><br />
+		Address: <input type="text" name="address" /><br />
 		State: <input type="text" name="state" /><br />
-		Zip: <input type="text" name="zip" /> <br />
+		Zip: <input type="text" name="zip" size="5" maxlength="5"/> <br />
 		City: <input type="text" name="city" /><br />
 		Area Code: <input type="text" name="areaCode" /><br />
 
