@@ -6,7 +6,36 @@
 </head>
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
-Last Name: <%=session.getAttribute("last") %> </br> 
+Last Name: <%=session.getAttribute("last") %> </br>
+Citizenship: <%=session.getAttribute("citizenship") %> </br>
+Country of Residence: <%=session.getAttribute("residence")%> </br>
+<% 
+	String address = request.getParameter("address"); 
+	String city = request.getParameter("city");
+	String zip = request.getParameter("zip");
+	String areaCode = request.getParameter("areaCode");
+	String ctc = null;
+	String state1 = null;
+	if(request.getParameter("state") == null)
+	{
+		ctc = request.getParameter("countryTelCode");
+	}
+	else
+	{
+		state1 = request.getParameter("state");
+	}
+%>
+Address: <%=address %> <br>
+City: <%=city %> <br>
+Zip: <%=zip %> <br>
+Area code: <%=areaCode %> <br>
+<% if(ctc != null){ %>
+Country Tel Code: <%=ctc %>
+<%} 
+else{ %>
+State: <%=state1 %>
+<%} %>
+
 
 <body>
  <% 
