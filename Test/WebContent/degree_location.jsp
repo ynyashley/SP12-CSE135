@@ -1,8 +1,7 @@
 <%@page import="support.*, java.util.*"  %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Provide Degrees -- Choose Location</title>
 </head>
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
@@ -10,19 +9,29 @@ Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
 <% 
-	String address = request.getParameter("address"); 
+	String address = request.getParameter("address");
+	session.setAttribute("address", address);
+	
 	String city = request.getParameter("city");
+	session.setAttribute("city", city);
+	
 	String zip = request.getParameter("zip");
+	session.setAttribute("zip", zip);
+	
 	String areaCode = request.getParameter("areaCode");
+	session.setAttribute("areaCode", areaCode);
+	
 	String ctc = null;
 	String state1 = null;
 	if(request.getParameter("state") == null)
 	{
 		ctc = request.getParameter("countryTelCode");
+		session.setAttribute("countryTelCode", ctc);
 	}
 	else
 	{
 		state1 = request.getParameter("state");
+		session.setAttribute("state", state1);
 	}
 %>
 Address: <%=address %> <br>
@@ -54,7 +63,7 @@ States in United States :
 			String state = (String)universityList.get(0);
 			%>
 			
-			<td><a href="university.jsp?location=<%=state%>"><%=state%></a></td>
+			<td><a href="degree_university.jsp?location=<%=state%>"><%=state%></a></td>
 			<%
 			if( (i+1)%3 == 0) { %>
 				<tr>
@@ -78,7 +87,7 @@ Other Country :
 			String country = (String)universityList.get(0);
 			%>
 			<% if ( i >= 51) { %>
-			       <td><a href="university.jsp?location=<%=country%>"><%=country%></a></td>
+			       <td><a href="degree_university.jsp?location=<%=country%>"><%=country%></a></td>
 			<% }
 			if(  ( (i+1)%3 == 0) && (i >= 51)){ %>
 				<tr>
