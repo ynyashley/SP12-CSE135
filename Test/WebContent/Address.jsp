@@ -39,6 +39,7 @@ Country of Residence: <%=residenceCountry%> </br>
 		Country Telephone code: <input type="text" name="countryTelCode"  /><br />
 		Zip: <input type="text" name="zip" size="5" maxlength="5"/> <br />
 		City: <input type="text" name="city" /><br />
+		Area Code: <input type="text" name="areaCode" size="3" maxlength="3" /><br />
 
 		<input type = "submit" name = "action" value = "submit" />
 	</form>
