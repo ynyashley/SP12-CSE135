@@ -22,7 +22,7 @@ else{ %>
 <% String location = request.getParameter("location"); 
    session.setAttribute("location", location);
 %>
-<br>
+<br> 
 University in <%=location %>:
 <p>
 <% 
@@ -54,7 +54,11 @@ University in <%=location %>:
   <% } %>
 
 </table>
-
+If your university is not listed above, please enter it in the text box below:
+<form action="degree_discipline.jsp" method="POST">
+<input type="text" name="university" />
+<input type = "submit" name = "action" value = "submit" />
+</form>
 
 </body>
 </html>

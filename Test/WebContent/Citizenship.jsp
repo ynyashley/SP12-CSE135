@@ -16,7 +16,9 @@
     %>
 	<%= "First Name: " +  first %> </br> 
 	<%= "Middle Initial: " +  middle %> </br> 
-	<%= "Last Name: " +  last %>
+	<%= "Last Name: " +  last %> </br>
+	
+	Please choose your country of citizenship:
 	
   <% 
    	support s = new support();   	
