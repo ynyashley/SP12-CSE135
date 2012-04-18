@@ -9,16 +9,27 @@ Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
-Address: <%=session.getAttribute("address") %></br>
-City: <%=session.getAttribute("city") %></br>
-Zip: <%=session.getAttribute("zip") %> </br>
-Area Code: <%=session.getAttribute("areaCode") %> </br>
+<% String counter = (String)session.getAttribute("counter"); %>
+<% 
+Address a = (Address)session.getAttribute("address");
+String add = (String)a.getAddress();
+String city = (String)a.getCity();
+String zip = (String)a.getZip();
+String area = (String)a.getAreaCode();
+String state = (String)a.getState();
+String ctc = (String)a.getTel();
+%>
+Address: <%=add %></br>
+City: <%=city %></br>
+Zip: <%=zip %> </br>
+Area Code: <%=area %> </br>
 <% if(session.getAttribute("state") == null) { %>
-	Country Telephone Code: <%=session.getAttribute("countryTelCode")%> </br>
+	Country Telephone Code: <%=ctc%> </br>
 <%} 
 else{ %>
-	State: <%=session.getAttribute("state") %>
+	State: <%=state%>
 <%} %>
+<br>
 <% 
    Degree d = (Degree)session.getAttribute("degree");
    String loc = (String)d.getLocation();
@@ -27,14 +38,15 @@ else{ %>
 <% String major = request.getParameter("major");
    String title = request.getParameter("title");
 %>
-Location of University: <%=loc %> </br>
-University: <%=uni %> </br>
-Major: <%=major %> </br>
-Title: <%=title %>
+Location of University <%=counter %>: <%=loc %> </br>
+University <%=counter %>: <%=uni %> </br>
+Major <%=counter %>: <%=major %> </br>
+Title <%=counter %>: <%=title %>
 <% 
 d.setDiscipline(major);
 d.setTitle(title);
 %>
+
 
 <form action="degree_location.jsp" method="POST">
 Do you wish to add more degrees? </br>
