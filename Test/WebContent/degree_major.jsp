@@ -1,3 +1,5 @@
+<!-- TODO: Save all information to Degree object -->
+
 <%@page import="support.*, java.util.*"  %>
 <html>
 <head>
@@ -9,15 +11,25 @@ Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
-Address: <%=session.getAttribute("address") %></br>
-City: <%=session.getAttribute("city") %></br>
-Zip: <%=session.getAttribute("zip") %> </br>
-Area Code: <%=session.getAttribute("areaCode") %> </br>
+<% String counter = (String)session.getAttribute("counter"); %>
+<% 
+Address a = (Address)session.getAttribute("address");
+String add = (String)a.getAddress();
+String city = (String)a.getCity();
+String zip = (String)a.getZip();
+String area = (String)a.getAreaCode();
+String state = (String)a.getState();
+String ctc = (String)a.getTel();
+%>
+Address: <%=add %></br>
+City: <%=city %></br>
+Zip: <%=zip %> </br>
+Area Code: <%=area %> </br>
 <% if(session.getAttribute("state") == null) { %>
-	Country Telephone Code: <%=session.getAttribute("countryTelCode")%> </br>
+	Country Telephone Code: <%=ctc%> </br>
 <%} 
 else{ %>
-	State: <%= session.getAttribute("location")%>
+	State: <%=state%>
 <%} %>
 <br>
 <%
@@ -27,8 +39,8 @@ d.setUniversity(university);
 String loc = (String)d.getLocation();
 String uni = (String)d.getUniversity();
 %>
-Location of University: <%=loc %> </br>
-University: <%=uni%> 
+Location of University <%=counter %>: <%=loc %> </br>
+University <%=counter %>: <%=uni%> 
 <% 
 String path3 = config.getServletContext().getRealPath("majors.txt");
 support s = new support();  
@@ -51,6 +63,8 @@ Title of Degree:
   <option value="MS">MS</option>
   <option value="PhD">PhD</option>
 </select>
+</br>
+GPA/Expected GPA: <input type="text" name="GPA" size= "3" /><br />
 </br>
 	
 <input type = "submit" name = "action" value = "submit" />
