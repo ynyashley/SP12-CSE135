@@ -20,7 +20,15 @@ else{ %>
 	State: <%= session.getAttribute("location")%>
 <%} %>
 <br>
-
+<%
+String university = request.getParameter("university");
+Degree d = (Degree)session.getAttribute("degree");
+d.setUniversity(university);
+String loc = (String)d.getLocation();
+String uni = (String)d.getUniversity();
+%>
+Location of University: <%=loc %> </br>
+University: <%=uni%> 
 <% 
 String path3 = config.getServletContext().getRealPath("majors.txt");
 support s = new support();  
@@ -34,7 +42,7 @@ Vector majors = s.getMajors(path3); %>
 <%} %>
 Discipline not on the list:
 <input type="text" name="major"/>
-
+</br>
 Month and year degree was awarded/expected to be awarded: <input type="text" name="month" size="6"/>
 / <input type="text" name="year" size= "6" /><br />
 Title of Degree:
