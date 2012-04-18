@@ -9,32 +9,39 @@ Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
 <% 
-	String address = request.getParameter("address");
-	session.setAttribute("address", address);
+	String address = (String)request.getParameter("address");
+	Address a = new Address();
+	a.setAddress(address);
 	
-	String city = request.getParameter("city");
-	session.setAttribute("city", city);
+	String city = (String)request.getParameter("city");
+	a.setCity(city);
 	
-	String zip = request.getParameter("zip");
-	session.setAttribute("zip", zip);
+	String zip = (String)request.getParameter("zip");
+	a.setZip(zip);
 	
-	String areaCode = request.getParameter("areaCode");
-	session.setAttribute("areaCode", areaCode);
+	String areaCode = (String)request.getParameter("areaCode");
+	a.setAreaCode(areaCode);
+	
 	
 	String ctc = null;
 	String state1 = null;
 	if(request.getParameter("state") == null)
 	{
-		ctc = request.getParameter("countryTelCode");
-		session.setAttribute("countryTelCode", ctc);
+		ctc = (String)request.getParameter("countryTelCode");
+		a.setTel(ctc);
 	}
 	else
 	{
-		state1 = request.getParameter("state");
-		session.setAttribute("state", state1);
+		state1 = (String)request.getParameter("state");
+		a.setState(state1);
 	}
+	session.setAttribute("address", a);
 %>
-Address: <%=address %> <br>
+<% 
+String add = a.getAddress(); 
+
+%>
+Address: <%=add %> <br>
 City: <%=city %> <br>
 Zip: <%=zip %> <br>
 Area code: <%=areaCode %> <br>
