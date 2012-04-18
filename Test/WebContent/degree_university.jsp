@@ -9,18 +9,32 @@ Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
-Address: <%=session.getAttribute("address") %></br>
-City: <%=session.getAttribute("city") %></br>
-Zip: <%=session.getAttribute("zip") %> </br>
-Area Code: <%=session.getAttribute("areaCode") %> </br>
+<% Address a = (Address)session.getAttribute("address");
+   String add = a.getAddress();
+   String city = (String)a.getCity();
+   String zip = (String)a.getZip();
+   String area = (String)a.getAreaCode();
+   String state = (String)a.getState();
+   String ctc = (String)a.getTel();
+%>
+Address: <%=add %></br>
+City: <%=city %></br>
+Zip: <%=zip %> </br>
+Area Code: <%=area %> </br>
 <% if(session.getAttribute("state") == null) { %>
-	Country Telephone Code: <%=session.getAttribute("countryTelCode")%> </br>
+	Country Telephone Code: <%=ctc%> </br>
 <%} 
 else{ %>
-	State: <%=session.getAttribute("state") %>
+	State: <%=state %>
 <%} %>
 <% String location = request.getParameter("location"); 
 %>
+<% String counter = (String)session.getAttribute("counter");
+int count = Integer.parseInt(counter);
+count++;
+counter = Integer.toString(count);
+session.setAttribute("counter", counter); %>
+<!-- CREATES NEW DEGREE OBJECT RIGHT HERE -->
 <%
 Degree d = new Degree();
 d.setLocation(location);
@@ -29,7 +43,7 @@ Degree d1 = (Degree)session.getAttribute("degree");
 String loc = (String)d1.getLocation();
 %>
 <br> 
-University in <%=loc %>:
+University <%=counter %> in <%=loc %>:
 <p>
 <% 
    	support s = new support();
