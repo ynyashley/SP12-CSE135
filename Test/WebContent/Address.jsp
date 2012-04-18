@@ -7,14 +7,14 @@
 <% String residenceCountry = request.getParameter("country"); %>
 <%
 session.setAttribute("residence", residenceCountry);
+String counter = "0";
+session.setAttribute("counter", counter);
 %>
-
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=residenceCountry%> </br>
-
 
 <% session.setAttribute("residence", residenceCountry); %>
 
