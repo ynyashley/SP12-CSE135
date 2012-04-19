@@ -1,6 +1,9 @@
 package support;
 import java.lang.String;
-
+/*
+ * Class for storing Applicant's Degree information which contain location for 
+ * the university, name of university, major, title, GPA/expected GPA, awarded date
+ */
 public class Degree 
 {
 	private String location;
@@ -10,14 +13,14 @@ public class Degree
 	private String GPA ;
 	private String month;
 	private String year;
-	
+	// empty constructor 
 	public Degree()
 	{
 		this.location = "";
 		this.university = "";
 		this.discipline = "";
 	}
-	
+	// constructor with 4 parameters (may use it later)
 	public Degree(String location, String university, String discipline,String title)
 	{
 		this.location = location;

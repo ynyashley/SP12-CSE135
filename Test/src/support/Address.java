@@ -1,5 +1,8 @@
 package support;
-
+/*
+ * Class for storing Applicant's address which contain address(street), city,
+ * state, country telephone code and also area code.
+ */
 public class Address
 {
 	private String address;
@@ -8,14 +11,14 @@ public class Address
 	private String state;
 	private String tel;
 	private String areaCode;
-	
+	// empty constructor
 	public Address()
 	{
 		this("", "", "");
 		this.state = "";
 		this.tel = "";
 	}
-	
+	// constructor with 3 parameters (may use it later)
 	public Address(String st, String zip, String city)
 	{
 		this.address = st;
