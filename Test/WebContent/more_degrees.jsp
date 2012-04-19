@@ -4,7 +4,7 @@
 <title>More Degrees</title>
 </head>
 <body>
-<!-- Get the information from the session and display them -->
+<!-- Get information from previous pages and display them -->
 <% String Residence_test = (String)session.getAttribute("residence") ;
 String c_ship = (String)session.getAttribute("citizenship");%>
 
@@ -13,6 +13,7 @@ Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
+<!-- Get counter that keeps track of how many degrees the applicant has entered -->
 <% String counter = (String)session.getAttribute("counter"); %>
 <% 
 Address a = (Address)session.getAttribute("address");
@@ -27,9 +28,11 @@ Address: <%=add %></br>
 City: <%=city %></br>
 Zip: <%=zip %> </br>
 Area Code: <%=area %> </br>
+<!-- Displays Country Tel Code if applicant does not reside in the U.S. -->
 <% if(!Residence_test.equals("United States")) { %>
 	Country Telephone Code: <%=ctc%> </br>
 <%} 
+//Displays State if applicant indicate that he/she resides in the U.S. 
 else{ %>
 	State: <%=state%>
 <%} %>
