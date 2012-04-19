@@ -4,17 +4,32 @@
 <title>Address</title>
 </head>
 <body>
-<% String residenceCountry = request.getParameter("country"); %>
+<% String residenceCountry = (String)request.getParameter("country"); 
+String c_ship = (String)session.getAttribute("citizenship");%>
 <%
 session.setAttribute("residence", residenceCountry);
 String counter = "0";
 session.setAttribute("counter", counter);
+ArrayList<Degree> Degree_array=new ArrayList<Degree>();
+session.setAttribute("degreeArray", Degree_array);
+
 %>
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=residenceCountry%> </br>
+<% 
+if ( c_ship.equals("United States")|| residenceCountry.equals("United States") ){
+%>
+	Identity of the Applicant: Domestic Applicant <br>	
+<%
+}
+else {%>
+	Identity of the Applicant: International Applicant<br>
+<%
+}
+%>
 
 <% session.setAttribute("residence", residenceCountry); %>
 

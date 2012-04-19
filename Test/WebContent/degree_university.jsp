@@ -4,6 +4,9 @@
 <title>Provide Degrees -- Choose University</title>
 </head>
 <body>
+<% String Residence_test = (String)session.getAttribute("residence") ; 
+String c_ship = (String)session.getAttribute("citizenship");%>
+
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
@@ -21,12 +24,23 @@ Address: <%=add %></br>
 City: <%=city %></br>
 Zip: <%=zip %> </br>
 Area Code: <%=area %> </br>
-<% if(session.getAttribute("state") == null) { %>
+<% if (!(Residence_test.equals("United States")) ){ %>
 	Country Telephone Code: <%=ctc%> </br>
 <%} 
 else{ %>
 	State: <%=state %>
 <%} %>
+<% 
+if ( c_ship.equals("United States")|| Residence_test.equals("United States") ){
+%>
+	Identity of the Applicant: Domestic Applicant <br>	
+<%
+}
+else {%>
+	Identity of the Applicant: International Applicant<br>
+<%
+}
+%>
 <% String location = request.getParameter("location"); 
 %>
 <% String counter = (String)session.getAttribute("counter");
@@ -38,10 +52,40 @@ session.setAttribute("counter", counter); %>
 <%
 Degree d = new Degree();
 d.setLocation(location);
+
+
 session.setAttribute("degree", d);
 Degree d1 = (Degree)session.getAttribute("degree");
 String loc = (String)d1.getLocation();
 %>
+
+<%
+	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
+	int count_t = Integer.parseInt(counter);
+	String StringCount, l, university, title, major, GPA, year, month;
+	if (count_t > 0) {
+		for (int i = 0 ; i < d_array.size(); i++ ){ 
+		StringCount = Integer.toString(i+1) ;
+		l = d_array.get(i).getLocation();
+		university = d_array.get(i).getUniversity() ;
+		title = d_array.get(i).getTitle();
+		major = d_array.get(i).getDiscipline() ;
+		GPA = d_array.get(i).getGPA() ;
+		month = d_array.get(i).getMonth() ;
+		year = d_array.get(i).getYear();
+		%>
+		University <%=StringCount %> in <%=l %> <br>
+		Name of University: <%=university%> <br>
+		major : <%= major %><br>
+		title : <%= title %><br>
+		GPA/Expect GPA: <%=GPA%> <br>
+		Month/Year: <%=month %>/<%=year %> <br>
+		<br>	
+	<%	}
+	}
+%>
+
+
 <br> 
 University <%=counter %> in <%=loc %>:
 <p>

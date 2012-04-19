@@ -3,11 +3,13 @@
 <head>
 <title>Provide Degrees -- Choose Location</title>
 </head>
+<% String Residence_test = (String)session.getAttribute("residence") ;  
+String c_ship = (String)session.getAttribute("citizenship");%>
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
-Country of Residence: <%=session.getAttribute("residence")%> </br>
+Country of Residence: <%=Residence_test%> </br>
 <% 
 	String counter = (String)session.getAttribute("counter");
 	String address = (String)request.getParameter("address");
@@ -54,13 +56,49 @@ Address: <%=add %> <br>
 City: <%=city1 %> <br>
 Zip: <%=zip1 %> <br>
 Area code: <%=area %> <br>
-<% if(ctc1 != null){ %>
-Country Tel Code: <%=ctc1 %>
+<% if(!(Residence_test.equals("United States")) ){ %>
+Country Tel Code: <%=ctc1 %> <br>
+<br>
 <%} 
 else{ %>
 State: <%=state2 %>
 <%} %>
-
+<% 
+if ( c_ship.equals("United States")|| Residence_test.equals("United States") ){
+%>
+	Identity of the Applicant: Domestic Applicant <br>	
+<%
+}
+else {%>
+	Identity of the Applicant: International Applicant <br>
+<%
+}
+%>
+<%
+	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
+	int count = Integer.parseInt(counter);
+	String StringCount, loc, university, title, major, GPA, year, month;
+	if (count > 0) {
+		for (int i = 0 ; i < d_array.size(); i++ ){ 
+		StringCount = Integer.toString(i+1) ;
+		loc = d_array.get(i).getLocation();
+		university = d_array.get(i).getUniversity() ;
+		title = d_array.get(i).getTitle();
+		major = d_array.get(i).getDiscipline() ;
+		GPA = d_array.get(i).getGPA() ;
+		month = d_array.get(i).getMonth() ;
+		year = d_array.get(i).getYear();
+		%>
+		University <%=StringCount %> in <%=loc %> <br>
+		Name of University: <%=university%> <br>
+		major : <%= major %><br>
+		title : <%= title %><br>
+		GPA/Expect GPA: <%=GPA%> <br>
+		Month/Year: <%=month %>/<%=year %> <br>
+		<br>	
+	<%	}
+	}
+%>
 <body>
 <p>
 Please choose your school location.

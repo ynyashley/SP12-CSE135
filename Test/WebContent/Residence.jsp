@@ -11,7 +11,7 @@
 session.setAttribute("citizenship", country);
 %>
 First Name: <%=session.getAttribute("first") %> </br >
-Middle: <%=session.getAttribute("middle") %> </br>
+Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=country%> </br>
 <br>
