@@ -14,7 +14,8 @@ Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=Residence_test%> </br>
 <% 
-	/* create the address object if the counter is "0".
+	/* 
+	 * Creates an Address object if the counter is "0".
 	 * also set counter in session.
 	 */
 	String counter = (String)session.getAttribute("counter");
@@ -73,7 +74,11 @@ else{ %>
 State: <%=state2 %>
 <%} %>
 <% 
-// check if the applicant is demostic Applicant and display it 
+/*
+ * The applicant is considered as a domestic applicant if he/she either
+ * resides in the U.S. or he/she owns a citizenship in the United States
+ * Otherwise, the applicant is considered as an international applicant.
+ */
 if ( c_ship.equals("United States")|| Residence_test.equals("United States") ){
 %>
 	Identity of the Applicant: Domestic Applicant <br>	
@@ -85,9 +90,11 @@ else {%>
 }
 %>
 <%
-	/* get the ArrayList object from the session and using loop to print it out
-	 * if the count > 0 
-	*/
+	/* 
+	 * Get the ArrayList object from session and use a loop to print out
+	 * all the information of the degree(s) that have previously been
+	 * entered
+	 */
 	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
 	int count = Integer.parseInt(counter);
 	String StringCount, loc, university, title, major, GPA, year, month;
@@ -126,7 +133,7 @@ States in United States :
 %>
 <table border="1">
 <%
-		// print them out with 3 conlumns
+		// print them out in 3 columns
 		for (int i = 0; i < 51; i++) {
 			Vector universityList = (Vector)universities.get(i);
 			String state = (String)universityList.get(0);
