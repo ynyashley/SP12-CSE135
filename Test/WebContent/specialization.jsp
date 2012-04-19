@@ -15,8 +15,8 @@ Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
-<% String counter = (String)session.getAttribute("counter"); 
-%>
+<!-- Get counter that keeps track of how many degrees the applicant has entered -->
+<% String counter = (String)session.getAttribute("counter"); %>
 <% 
 // set the element to the object
 Address a = (Address)session.getAttribute("address");
