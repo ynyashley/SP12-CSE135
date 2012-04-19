@@ -7,6 +7,9 @@ public class Degree
 	private String university;
 	private String discipline;
 	private String title;
+	private String GPA ;
+	private String month;
+	private String year;
 	
 	public Degree()
 	{
@@ -15,12 +18,13 @@ public class Degree
 		this.discipline = "";
 	}
 	
-	public Degree(String location, String university, String discipline, String title)
+	public Degree(String location, String university, String discipline,String title)
 	{
 		this.location = location;
 		this.university = university;
 		this.discipline = discipline;
 		this.title = title;
+	
 	}
 	/*********** GETTERS AND SETTERS ***********/
 	public String getLocation()
@@ -39,6 +43,18 @@ public class Degree
 	{
 		return this.title;
 	}
+	public String getGPA()
+	{
+		return this.GPA;
+	}
+	public String getYear()
+	{
+		return this.year;
+	}
+	public String getMonth()
+	{
+		return this.month;
+	}
 	public void setLocation(String location)
 	{
 		this.location = location;
@@ -54,5 +70,15 @@ public class Degree
 	public void setTitle(String title)
 	{
 		this.title = title;
+	}
+	public void setGPA(String GPA)
+	{
+		this.GPA = GPA;
+	}
+	public void setYear(String year){
+		this.year = year ;
+	}
+	public void setMonth(String month){
+		this.month = month ;
 	}
 }
