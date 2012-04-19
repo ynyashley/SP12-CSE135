@@ -91,6 +91,7 @@ else {%>
 String path = config.getServletContext().getRealPath("specializations.txt");
 support s = new support();  
 Vector specialization = s.getSpecializations(path); %>
+Please choose your specialization from the list below:
 <form method = get action ="verification.jsp">
 <SELECT name ="specialization">
 <%

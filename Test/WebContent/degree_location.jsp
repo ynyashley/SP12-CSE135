@@ -71,7 +71,7 @@ Country Tel Code: <%=ctc1 %> <br>
 <br>
 <%} 
 else{ %>
-State: <%=state2 %>
+State: <%=state2 %> <br>
 <%} %>
 <% 
 /*
