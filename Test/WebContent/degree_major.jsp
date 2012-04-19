@@ -1,5 +1,3 @@
-<!-- TODO: Save all information to Degree object -->
-
 <%@page import="support.*, java.util.*"  %>
 <html>
 <head>
@@ -7,7 +5,8 @@
 </head>
 <body>
 <%
-// get the information from the session and print them out
+//Get information from session and the Address object and print them out
+
 String Residence_test = (String)session.getAttribute("residence") ;
 String c_ship = (String)session.getAttribute("citizenship");%>
 
@@ -31,8 +30,8 @@ Address: <%=add %></br>
 City: <%=city %></br>
 Zip: <%=zip %> </br>
 Area Code: <%=area %> </br>
-<% // display country telephone code if Residence is not United State, 
-   // if not display state
+<% 
+//Displays Country Tel Code if applicant does not reside in the U.S.
 if(!(Residence_test.equals("United States"))) { %>
 	Country Telephone Code: <%=ctc%> </br>
 <%} 
@@ -41,7 +40,12 @@ else{ %>
 <%} %>
 <br>
 
-<% // same as previous file
+<% 
+/*
+ * The applicant is considered as a domestic applicant if he/she either
+ * resides in the U.S. or he/she owns a citizenship in the United States
+ * Otherwise, the applicant is considered as an international applicant.
+ */
 if ( c_ship.equals("United States")|| Residence_test.equals("United States") ){
 %>
 	Identity of the Applicant: Domestic Applicant <br>	
@@ -54,7 +58,11 @@ else {%>
 %>
 
 <%
-// get the object from session and set the university to the degree object
+/*
+ * Get the Degree object from session so we can access the location and
+ * that has previously been provided by the applicant and then set the 
+ * newly obtained university field into the existing Degree object.s 
+ */
 String university = request.getParameter("university");
 Degree d = (Degree)session.getAttribute("degree");
 d.setUniversity(university);
@@ -64,7 +72,11 @@ String uni = (String)d.getUniversity();
 %>
 
 <%
-	// same as previous file printing out the arrayList of degree object
+   /* 
+ 	* Get the ArrayList object from session and use a loop to print out
+ 	* all the information of the degree(s) that have previously been
+ 	* entered
+ 	*/
 	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
 	int count_t = Integer.parseInt(counter);
 	String StringCount, l, u, title, major, GPA, year, month;
