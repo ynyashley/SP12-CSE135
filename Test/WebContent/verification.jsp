@@ -6,6 +6,8 @@
 <title>Verification</title>
 </head>
 <body>
+<!-- This page is printing out all the information form the applicant and provide 
+the submit button to submit the application or cancel it(go back to Name.jsp)-->
 <% String specialization = request.getParameter("specialization") ; 
  String Residence_test = (String)session.getAttribute("residence") ; 
  String c_ship = (String)session.getAttribute("citizenship");%>

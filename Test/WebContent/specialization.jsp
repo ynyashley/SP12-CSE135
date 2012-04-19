@@ -5,7 +5,9 @@
 <title> Specialization</title>
 </head>
 <body>
-<% String Residence_test = (String)session.getAttribute("residence") ; 
+<%
+// Get the information from the session and display them 
+String Residence_test = (String)session.getAttribute("residence") ; 
 String c_ship = (String)session.getAttribute("citizenship");%>
 
 First Name: <%=session.getAttribute("first") %> </br >
@@ -14,8 +16,9 @@ Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
 <% String counter = (String)session.getAttribute("counter"); 
-//session.setAttribute("counter",counter);%>
+%>
 <% 
+// set the element to the object
 Address a = (Address)session.getAttribute("address");
 String add = (String)a.getAddress();
 String city = (String)a.getCity();
@@ -24,17 +27,20 @@ String area = (String)a.getAreaCode();
 String state = (String)a.getState();
 String ctc = (String)a.getTel();
 %>
+<!-- display the address information -->
 Address: <%=add %></br>
 City: <%=city %></br>
 Zip: <%=zip %> </br>
 Area Code: <%=area %> </br>
-<% if(!Residence_test.equals("United States")) { %>
+<% // checking if we need to display the state or country telephone code
+	if(!Residence_test.equals("United States")) { %>
 	Country Telephone Code: <%=ctc%> </br>
 <%} 
 else{ %>
 	State: <%=state%>
 <%} %>
 <% 
+//same as befoer checking if the applicant is Domestic applicant or not
 if ( c_ship.equals("United States")|| Residence_test.equals("United States") ){
 %>
 	Identity of the Applicant: Domestic Applicant <br>	
@@ -45,7 +51,7 @@ else {%>
 <%
 }
 %>
-<% 
+<% // get the information fromr the degree object
    Degree d = (Degree)session.getAttribute("degree");
    String loc = (String)d.getLocation();
    String uni = (String)d.getUniversity();
@@ -54,6 +60,7 @@ else {%>
 %>
 
 <%
+	// display the arrayList
 	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
 	int count_t = Integer.parseInt(counter);
 	String StringCount, l, u, t, m, G, y, mo;
@@ -80,6 +87,7 @@ else {%>
 %>
 
 <% 
+// using the support method to access the vector of the specialization
 String path = config.getServletContext().getRealPath("specializations.txt");
 support s = new support();  
 Vector specialization = s.getSpecializations(path); %>

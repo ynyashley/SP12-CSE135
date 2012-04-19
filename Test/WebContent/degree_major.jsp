@@ -6,7 +6,9 @@
 <title>Provide Degree -- Choose Discipline</title>
 </head>
 <body>
-<% String Residence_test = (String)session.getAttribute("residence") ;
+<%
+// get the information from the session and print them out
+String Residence_test = (String)session.getAttribute("residence") ;
 String c_ship = (String)session.getAttribute("citizenship");%>
 
 First Name: <%=session.getAttribute("first") %> </br >
@@ -16,6 +18,7 @@ Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=session.getAttribute("residence")%> </br>
 <% String counter = (String)session.getAttribute("counter"); %>
 <% 
+// set those element to the Address object 
 Address a = (Address)session.getAttribute("address");
 String add = (String)a.getAddress();
 String city = (String)a.getCity();
@@ -28,7 +31,9 @@ Address: <%=add %></br>
 City: <%=city %></br>
 Zip: <%=zip %> </br>
 Area Code: <%=area %> </br>
-<% if(!(Residence_test.equals("United States"))) { %>
+<% // display country telephone code if Residence is not United State, 
+   // if not display state
+if(!(Residence_test.equals("United States"))) { %>
 	Country Telephone Code: <%=ctc%> </br>
 <%} 
 else{ %>
@@ -36,7 +41,7 @@ else{ %>
 <%} %>
 <br>
 
-<% 
+<% // same as previous file
 if ( c_ship.equals("United States")|| Residence_test.equals("United States") ){
 %>
 	Identity of the Applicant: Domestic Applicant <br>	
@@ -49,6 +54,7 @@ else {%>
 %>
 
 <%
+// get the object from session and set the university to the degree object
 String university = request.getParameter("university");
 Degree d = (Degree)session.getAttribute("degree");
 d.setUniversity(university);
@@ -58,6 +64,7 @@ String uni = (String)d.getUniversity();
 %>
 
 <%
+	// same as previous file printing out the arrayList of degree object
 	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
 	int count_t = Integer.parseInt(counter);
 	String StringCount, l, u, title, major, GPA, year, month;
@@ -85,7 +92,7 @@ String uni = (String)d.getUniversity();
 
 
 
-
+<!-- display the form for the applicant to specific their major, Gpa and the date -->
 Location of University <%=counter %>: <%=loc %> </br>
 University <%=counter %>: <%=uni%> 
 <% 

@@ -5,6 +5,7 @@
 <title>Residence</title>
 </head>
 <body>
+<!-- Get the information from the session and display them -->
 <% String country = request.getParameter("country"); %>
 
 <%
@@ -15,6 +16,7 @@ Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=country%> </br>
 <br>
+<!-- provide the hyperlink if the residence is the same as citizenship -->
 <a href="Address.jsp?country=<%=country%>">Same as country of citizenship</a><br>
 	<% 
    	support s = new support();   	

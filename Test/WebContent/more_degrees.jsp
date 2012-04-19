@@ -4,6 +4,7 @@
 <title>More Degrees</title>
 </head>
 <body>
+<!-- Get the information from the session and display them -->
 <% String Residence_test = (String)session.getAttribute("residence") ;
 String c_ship = (String)session.getAttribute("citizenship");%>
 
@@ -56,6 +57,7 @@ else {%>
    String year = request.getParameter("year") ;
 %>
 <%
+	// display the array list if the count_t > 0 
 	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
 	int count_t = Integer.parseInt(counter);
 	String StringCount, l, u, t, m, G, y, mo;
@@ -98,7 +100,7 @@ d.setYear(year) ;
 d_array.add(d) ;
 %>
 
-
+<!-- provide the botton to the applicant for adding more degree or finishing the application -->
 <form action="degree_location.jsp" method="POST">
 Do you wish to add more degrees? </br>
 <input type = "submit" name = "action" value = "Submit Next Degree"/>

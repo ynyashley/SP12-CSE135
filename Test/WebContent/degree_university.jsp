@@ -4,7 +4,9 @@
 <title>Provide Degrees -- Choose University</title>
 </head>
 <body>
-<% String Residence_test = (String)session.getAttribute("residence") ; 
+<!-- get the information from the session and the address object and print them out-->
+<% 
+String Residence_test = (String)session.getAttribute("residence") ; 
 String c_ship = (String)session.getAttribute("citizenship");%>
 
 First Name: <%=session.getAttribute("first") %> </br >
@@ -24,13 +26,15 @@ Address: <%=add %></br>
 City: <%=city %></br>
 Zip: <%=zip %> </br>
 Area Code: <%=area %> </br>
-<% if (!(Residence_test.equals("United States")) ){ %>
+<% // check if we need to display the state information or not 
+if (!(Residence_test.equals("United States")) ){ %>
 	Country Telephone Code: <%=ctc%> </br>
 <%} 
 else{ %>
 	State: <%=state %>
 <%} %>
 <% 
+// check the applicant if they are Domestic Applicant or not
 if ( c_ship.equals("United States")|| Residence_test.equals("United States") ){
 %>
 	Identity of the Applicant: Domestic Applicant <br>	
@@ -50,6 +54,7 @@ counter = Integer.toString(count);
 session.setAttribute("counter", counter); %>
 <!-- CREATES NEW DEGREE OBJECT RIGHT HERE -->
 <%
+// create the new degree object and set it into the session
 Degree d = new Degree();
 d.setLocation(location);
 
@@ -60,6 +65,7 @@ String loc = (String)d1.getLocation();
 %>
 
 <%
+	// display the array of Degree if the count_t > 0
 	ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray") ;
 	int count_t = Integer.parseInt(counter);
 	String StringCount, l, university, title, major, GPA, year, month;
@@ -85,7 +91,9 @@ String loc = (String)d1.getLocation();
 	}
 %>
 
-
+<!-- in this area of coding, we use the support method and display it with 3 columns
+     if the university doesnt exist in the list, provide the text box and require the 
+     user to input -->
 <br> 
 University <%=counter %> in <%=loc %>:
 <p>

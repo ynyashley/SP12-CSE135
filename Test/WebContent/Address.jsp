@@ -3,10 +3,15 @@
 <head>
 <title>Address</title>
 </head>
+
 <body>
 <% String residenceCountry = (String)request.getParameter("country"); 
 String c_ship = (String)session.getAttribute("citizenship");%>
 <%
+/* Get the information for the residence and creating the counter for 
+*  the arrayList of Degree object. Also set the ArrayList of Degree to 
+*  session.
+*/
 session.setAttribute("residence", residenceCountry);
 String counter = "0";
 session.setAttribute("counter", counter);
@@ -19,7 +24,7 @@ Middle Initial: <%=session.getAttribute("middle") %> </br>
 Last Name: <%=session.getAttribute("last") %> </br>
 Citizenship: <%=session.getAttribute("citizenship") %> </br>
 Country of Residence: <%=residenceCountry%> </br>
-<% 
+<% // check if the applicant is Demostic Applicant or not
 if ( c_ship.equals("United States")|| residenceCountry.equals("United States") ){
 %>
 	Identity of the Applicant: Domestic Applicant <br>	
@@ -33,7 +38,9 @@ else {%>
 
 <% session.setAttribute("residence", residenceCountry); %>
 
-<% 
+<% /* if the residence is in United States, provide a US address form to applicant
+	* , else provide a form of international address
+	*/
 	if (residenceCountry.equals("United States") ){
 %>		
     <form action="degree_location.jsp" method="POST">
