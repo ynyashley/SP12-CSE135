@@ -63,7 +63,7 @@ String state2 = a1.getState();
 Address: <%=add %> <br>
 City: <%=city1 %> <br>
 Zip: <%=zip1 %> <br>
-Area code: <%=area %> <br>
+Area Code: <%=area %> <br>
 <% // check if the residence is in US or not. if so 
    // display state, otherwise display the country telephone code  
 if(!(Residence_test.equals("United States")) ){ %>
@@ -111,9 +111,9 @@ else {%>
 		%>
 		University <%=StringCount %> in <%=loc %> <br>
 		Name of University: <%=university%> <br>
-		major : <%= major %><br>
-		title : <%= title %><br>
-		GPA/Expect GPA: <%=GPA%> <br>
+		Major : <%= major %><br>
+		Title : <%= title %><br>
+		GPA/Expected GPA: <%=GPA%> <br>
 		Month/Year: <%=month %>/<%=year %> <br>
 		<br>	
 	<%	}

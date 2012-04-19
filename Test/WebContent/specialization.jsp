@@ -77,9 +77,9 @@ else {%>
 		%>
 		University <%=StringCount %> in <%=l %> <br>
 		Name of University <%=StringCount %> : <%=u%> <br>
-		major <%=StringCount %> : <%= m %><br>
-		title <%=StringCount %> : <%= t %><br>
-		GPA/Expect GPA <%=StringCount %> : <%=G%> <br>
+		Major <%=StringCount %> : <%= m %><br>
+		Title <%=StringCount %> : <%= t %><br>
+		GPA/Expected GPA <%=StringCount %> : <%=G%> <br>
 		Month/Year <%=StringCount %> : <%=mo %>/<%=y %> <br>
 		<br>	
 	<%	}

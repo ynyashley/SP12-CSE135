@@ -93,9 +93,9 @@ String uni = (String)d.getUniversity();
 		%>
 		University <%=StringCount %> in <%=l %> <br>
 		Name of University: <%=u%> <br>
-		major : <%= major %><br>
-		title : <%= title %><br>
-		GPA/Expect GPA: <%=GPA%> <br>
+		Major : <%= major %><br>
+		Title : <%= title %><br>
+		GPA/Expected GPA: <%=GPA%> <br>
 		Month/Year: <%=month %>/<%=year %> <br>
 		<br>	
 	<%	}

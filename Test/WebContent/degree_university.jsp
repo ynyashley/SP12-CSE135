@@ -99,9 +99,9 @@ String loc = (String)d1.getLocation();
 		%>
 		University <%=StringCount %> in <%=l %> <br>
 		Name of University: <%=university%> <br>
-		major : <%= major %><br>
-		title : <%= title %><br>
-		GPA/Expect GPA: <%=GPA%> <br>
+		Major : <%= major %><br>
+		Title : <%= title %><br>
+		GPA/Expected GPA: <%=GPA%> <br>
 		Month/Year: <%=month %>/<%=year %> <br>
 		<br>	
 	<%	}
