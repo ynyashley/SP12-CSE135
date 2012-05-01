@@ -83,10 +83,10 @@ else {%>
 Specialization: <%=specialization%>
 <br>
 <br>
-<form action="degree_location.jsp" method="POST">
+<form action="Confirmation.jsp" method="POST">
 <input type = "submit" name = "action" value = "Submit Application"/>
 </form>
-<form action="Name.jsp" method="POST">
+<form action="Cancelation.jsp" method="POST">
 <input type = "submit" name = "action" value = "Cancel" />
 </form>
 
