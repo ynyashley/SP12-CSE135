@@ -12,16 +12,16 @@
     String path4 = config.getServletContext().getRealPath("specializations.txt");
     
     Writer writer1 = new BufferedWriter(new OutputStreamWriter(
-    	    new FileOutputStream("C:/Users/Ashley/Documents/insert_countries.sql"), "UTF-8"));
+    	    new FileOutputStream("d:/insert_countries.sql"), "UTF-8"));
     
     Writer writer2 = new BufferedWriter(new OutputStreamWriter(
-    	    new FileOutputStream("C:/Users/Ashley/Documents/insert_universities.sql"), "UTF-8"));
+    	    new FileOutputStream("d:/insert_universities.sql"), "UTF-8"));
     
     Writer writer3 = new BufferedWriter(new OutputStreamWriter(
-    	    new FileOutputStream("C:/Users/Ashley/Documents/insert_majors.sql"), "UTF-8"));
+    	    new FileOutputStream("d:/insert_majors.sql"), "UTF-8"));
     
     Writer writer4 = new BufferedWriter(new OutputStreamWriter(
-    	    new FileOutputStream("C:/Users/Ashley/Documents/insert_specializations.sql"), "UTF-8"));
+    	    new FileOutputStream("d:/insert_specializations.sql"), "UTF-8"));
 	
     //getCountries returns a vector of the countries to be used for choosing citizenship
     Vector countries = s.getCountries(path1);    
@@ -71,7 +71,7 @@
       for(int j=0; j<u.size(); j++){
       	String university = (String)u.get(j);
       	university = university.replaceAll("'", "''");
-      	writer2.write("INSERT INTO universities (university, country_state) values ('" +state+"','"+ university +"');\n");            	
+      	writer2.write("INSERT INTO universities (university, country_state) values ('" +university+"','"+ state +"');\n");            	
       }
     } 
     out.println("Writer \"insert_universities.sql\" Successfully!<br>");
