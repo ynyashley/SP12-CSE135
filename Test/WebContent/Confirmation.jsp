@@ -90,7 +90,7 @@
 			
 			// creat result set and statement for selecting the country from table countries 
 			Statement stmt6 = conn.createStatement();
-			ResultSet citz = stmt5
+			ResultSet citz = stmt6
 			.executeQuery("SELECT c_id FROM countries WHERE country ='"
 					+ citizen + "'");
 			citz.next();
@@ -99,15 +99,15 @@
 			
 			// creat result set and statement for selecting the country from table countries 
 			Statement stmt7 = conn.createStatement();
-			ResultSet address_info = stmt5
-			.executeQuery("SELECT a_id FROM countries WHERE street ='"
+			ResultSet address_info = stmt7
+			.executeQuery("SELECT a_id FROM Address WHERE street ='"
 					+ a.getAddress() + "'");
 			address_info.next();
 			pstmt.setInt(6,address_info.getInt(1)) ;
 			
 			// creat result set and statement for selecting the specialization from table specialization 
 			Statement stmt8 = conn.createStatement();
-			ResultSet sp = stmt5
+			ResultSet sp = stmt8
 			.executeQuery("SELECT s_id FROM specializations WHERE specialization ='"
 					+ special + "'");
 			sp.next();
@@ -129,7 +129,7 @@
 			Statement stmt2 = conn.createStatement();
 			Statement stmt3 = conn.createStatement();
 			Statement stmt4 = conn.createStatement();
-			
+			Statement stmt9 = conn.createStatement();
 			
 			
 			/* REMEMBER 
@@ -144,10 +144,11 @@
 				//StringCount = Integer.toString(i+1) ;
 				pstmt = conn
 					.prepareStatement("INSERT INTO degrees (uni, major, title, month_award, year_award, gpa)"
-							+ " VALUES (?,?,?,?,?,?)");
+							+ ", address, spec VALUES (?,?,?,?,?,?,?,?)");
 				ResultSet uni = stmt1
 						.executeQuery("SELECT u_id FROM Universities WHERE university ='"
 								+ d_array.get(i).getUniversity() + "'");
+				// TODO: check if it is in the SQL table
 				uni.next();
 				
 				pstmt.setInt(1,uni.getInt(1));
@@ -168,9 +169,11 @@
 				
 				G = d_array.get(i).getGPA();
 				pstmt.setString(6, G);
+				
+				
 				pstmt.executeUpdate();
 			
-				
+					
 				// Insert the relationship with d_id (table degrees)and p_id (table personal_info) 
 				
 				pstmt = conn

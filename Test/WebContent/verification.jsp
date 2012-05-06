@@ -11,6 +11,8 @@ the submit button to submit the application or cancel it(go back to Name.jsp)-->
 <% String specialization = request.getParameter("specialization") ; 
  String Residence_test = (String)session.getAttribute("residence") ; 
  String c_ship = (String)session.getAttribute("citizenship");%>
+ 
+ session.setAttribute("spec", specialization);
 
 First Name: <%=session.getAttribute("first") %> </br >
 Middle Initial: <%=session.getAttribute("middle") %> </br>
