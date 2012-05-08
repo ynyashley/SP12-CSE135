@@ -90,68 +90,64 @@
             	
             	try
             	{
-        			rs = statement.executeQuery("SELECT u_id FROM Universities WHERE university='"+ uni + "'");
-            		while(rs.next())
+        			rs = statement.executeQuery("SELECT u_id FROM Universities WHERE university='"+ uni + "'" +
+        					                   "AND country_state= '" + loc + "'");
+        			if(!rs.next())
             		{
-            			pstmt.setInt(1, rs.getInt("u_id"));
-            
+            			throw new SQLException();
             		}
-            		try
-            		{
+            		pstmt.setInt(1, rs.getInt("u_id"));
+					try
+					{
 						rs = statement.executeQuery("SELECT m_id FROM Majors WHERE major='"+ major + "'");
-            		
-            			while(rs.next())
+            			if(!rs.next())
 						{
-        					pstmt.setInt(2, rs.getInt("m_id"));
+        					throw new SQLException();
 						}
-        				pstmt.setString(3, title);
+            			pstmt.setInt(2, rs.getInt("m_id"));
+            			pstmt.setString(3, title);
         				pstmt.setString(4, month);
         				pstmt.setString(5, year);
         				pstmt.setString(6, gpa);
         				rs = pstmt.executeQuery();
     					rs.next();
-    					out.println("try " + i);
     					d_id.add(rs.getInt("d_id"));
-            		}
-            		catch(SQLException e)
-            		{
-            			pstmt2 = conn.prepareStatement("INSERT INTO Majors (major) Values (?) returning m_id");
-            			pstmt2.setString(1, major);
-            			rs = pstmt2.executeQuery();
-                		rs.next();
-                		m_id =  rs.getInt("m_id");
-                		
-                		pstmt.setInt(2, m_id);
-                		pstmt.setString(3, title);
+					}
+					catch(SQLException e)
+					{
+						pstmt2 = conn.prepareStatement("INSERT INTO Majors (major) Values (?) returning m_id");
+						pstmt2.setString(1, major);
+						rs = pstmt2.executeQuery();
+						rs.next();
+						m_id = rs.getInt("m_id");
+						pstmt.setInt(2, m_id);
+            			pstmt.setString(3, title);
         				pstmt.setString(4, month);
         				pstmt.setString(5, year);
         				pstmt.setString(6, gpa);
         				rs = pstmt.executeQuery();
     					rs.next();
-    					out.println("catch " + i);
     					d_id.add(rs.getInt("d_id"));
-            		}
+					}
             	}
             	catch(SQLException e)
             	{
-            		pstmt = conn.prepareStatement("INSERT INTO universities (university, country_state)"
+            		pstmt2 = conn.prepareStatement("INSERT INTO universities (university, country_state)"
             	                                 + "VALUES (?, ?) returning u_id");
-            		pstmt.setString(1, uni);
-            		pstmt.setString(2, loc);
-            		rs = pstmt.executeQuery();
+            		pstmt2.setString(1, uni);
+            		pstmt2.setString(2, loc);
+            		rs = pstmt2.executeQuery();
             		rs.next();
             		u_id =  rs.getInt("u_id");
-            		pstmt = conn
-                    		.prepareStatement("INSERT INTO degrees (uni, major, title, month_award, year_award, gpa)" 
-                                                   +" VALUES (?, ?, ?, ?, ?, ?) returning d_id");
             		pstmt.setInt(1, u_id);
-            		//try
-            		//{
+            		try
+            		{
             			rs = statement.executeQuery("SELECT m_id FROM Majors WHERE major='"+ major + "'");
-						while(rs.next())
+						if(!rs.next())
 						{
-        					pstmt.setInt(2, rs.getInt("m_id"));
+        					throw new SQLException();
 						}
+						pstmt.setInt(2, rs.getInt("m_id"));
         				pstmt.setString(3, title);
         				pstmt.setString(4, month);
         				pstmt.setString(5, year);
@@ -159,24 +155,23 @@
         				rs = pstmt.executeQuery();
     					rs.next();
     					d_id.add(rs.getInt("d_id"));
-            		//}
-            		/* catch(SQLException e2)
-            		//{
+            		}
+            		catch(SQLException e1)
+            		{
             			pstmt2 = conn.prepareStatement("INSERT INTO Majors (major) Values (?) returning m_id");
-            			pstmt2.setString(1, major);
-            			rs = pstmt2.executeQuery();
-                		rs.next();
-                		m_id =  rs.getInt("m_id");
-                		
-                		pstmt.setInt(2, m_id);
-                		pstmt.setString(3, title);
+						pstmt2.setString(1, major);
+						rs = pstmt2.executeQuery();
+						rs.next();
+						m_id = rs.getInt("m_id");
+						pstmt.setInt(2, m_id);
+            			pstmt.setString(3, title);
         				pstmt.setString(4, month);
         				pstmt.setString(5, year);
         				pstmt.setString(6, gpa);
         				rs = pstmt.executeQuery();
     					rs.next();
     					d_id.add(rs.getInt("d_id"));
-            		} */
+            		}
             	}
             }
            
@@ -269,14 +264,6 @@
 				} 
 				catch (SQLException e) {} // Ignore
 				pstmt = null;
-			}
-			if (pstmt2 != null) 
-			{
-				try {
-					pstmt2.close();
-				} 
-				catch (SQLException e) {} // Ignore
-				pstmt2 = null;
 			}
 			if (conn != null) 
 			{
