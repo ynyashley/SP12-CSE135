@@ -26,7 +26,7 @@
 		String path4 = config.getServletContext().getRealPath(
 				"specializations.txt");
 		Vector specialization_list = s.getSpecializations(path4);
-	
+
 		// Create the statement and result, Ready for the SQL Operation 
 		Statement stmt1 = conn.createStatement();
 		//rs = stmt.executeQuery("SELECT specialization FROM specializations" ) ;
@@ -35,29 +35,33 @@
 		// go through the specialization vector and find the corresponding name to find out 
 		// how many applicants apply this Specialization.
 		for (int i = 0; i < specialization_list.size(); i++) {
-			
-			out.println("\t" + specialization_list.elementAt(i) + "\t");
+
+			out.println(specialization_list.elementAt(i));
 			ResultSet sp = stmt1
 					.executeQuery("SELECT s_id FROM specializations WHERE specialization = '"
 							+ specialization_list.elementAt(i) + "'");
 			while (sp.next()) {
-				counter = 0;  // set it to zero before search it in the personal_info Table
+				// set it to zero before search it in the personal_info Table
+				counter = 0;
 				rs = stmt2
 						.executeQuery("SELECT p_id FROM personal_info WHERE spec = '"
-								+ sp.getInt(1) + "'"); 
+								+ sp.getInt(1) + "'");
 				// if the cursor doesn't point to null
 				while (rs.next()) {
 					counter++;
 				}
 			}
 			// print out the count 
-	%> 
-	
-	<a href="Application.jsp?specialization_analysis=<%=specialization_list.elementAt(i)%>"><%=counter%></a>
+
+			if (counter == 0) { // if it is zero , dont display the hyperlink
+%> 0 <br><%
+	} else {// else display the counter as hyperlink
+%> <a
+	href="Application.jsp?specialization_analysis=<%=specialization_list.elementAt(i)%>"><%=counter%></a>
 <br>
 <%
+	}
 		}
-	
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
@@ -84,7 +88,7 @@
 		}
 
 	}
-%> 
+%>
 </FORM>
 </body>
 </html>

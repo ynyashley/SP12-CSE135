@@ -8,12 +8,10 @@
 <%
 	String spec = (String) request
 			.getParameter("specialization_analysis");
-	String major = request.getParameter("major");
+	String major = (String) request.getParameter("major");
 	//out.println(spec) ;
 %>
-<%
-	//session.getAttribute("specialization_analysis");
-%>
+
 <%@ page import="java.sql.*"%>
 
 <FORM METHOD=GET ACTION="application.jsp">
@@ -30,6 +28,10 @@
 	ResultSet rs_uni = null;
 	ResultSet rs_mj = null;
 	ResultSet rs_param = null;
+	ResultSet rs_param_1 = null;
+	ResultSet rs_param_2 = null;
+	ResultSet rs_degree_major = null;
+
 	try {
 		// Registering Postgresql JDBC driver with the DriverManager
 		Class.forName("org.postgresql.Driver");
@@ -44,128 +46,262 @@
 		Statement stmt2 = conn.createStatement();
 		Statement stmt3 = conn.createStatement();
 		Statement stmt4 = conn.createStatement();
+		Statement stmt5 = conn.createStatement();
+		Statement stmt6 = conn.createStatement();
 
 		if (spec == null && major == null) {
-			rs = stmt
-					.executeQuery("SELECT* FROM personal_info");
-			String FullName = ""; 
+			rs = stmt.executeQuery("SELECT* FROM personal_info");
+			String FullName = "";
 			out.println("Names of Applicants: <br>");
 			while (rs.next()) {
-				FullName = rs.getString(2) + " "+ rs.getString(3)+" " + rs.getString(4);
-				%>
-				<a href="Applicant_info.jsp?p_id=<%=rs.getInt(1)%>"><%=FullName%></a> <br>
-				<% 
-			}
-		} else {
+				FullName = rs.getString(2) + " " + rs.getString(3)
+						+ " " + rs.getString(4);
+%> <a href="Applicant_info.jsp?p_id=<%=rs.getInt(1)%>"><%=FullName%></a>
+<br>
+<%
+	}
+		} else if (spec != null && major == null) {
 
-			if (spec != null) {
+			rs_param = stmt4
+					.executeQuery("SELECT s_id FROM specializations where specialization = '"
+							+ spec + "'");
 
-				rs_param = stmt4
-						.executeQuery("SELECT s_id FROM specializations where specialization = '"
-								+ spec + "'");
-				rs_param.next();
-				rs = stmt
-						.executeQuery("SELECT* FROM personal_info where spec = '"
-								+ rs_param.getInt(1) + "'");
+			rs_param.next();
+			rs = stmt
+					.executeQuery("SELECT* FROM personal_info where spec = '"
+							+ rs_param.getInt(1) + "'");
 
-				while (rs.next()) {
-					out.println("Name of the Applicant: ");
+			while (rs.next()) {
+
+				out.println("Name of the Applicant: ");
+				out.println("<br>");
+				out.println("First Name: " + rs.getString(2));
+				out.println("<br>");
+				out.println("Last Name: " + rs.getString(3));
+				out.println("<br>");
+				out.println("MI: " + rs.getString(4));
+				out.println("<br>");
+				rs_countries = stmt1
+						.executeQuery("SELECT country FROM countries where c_id ='"
+								+ rs.getInt(5) + "'");
+				while (rs_countries.next()) {
+					out.println("Residence : "
+							+ rs_countries.getString(1) + " ");
+				}
+				out.println("<br>");
+
+				rs_countries = stmt1
+						.executeQuery("SELECT country FROM countries where c_id ='"
+								+ rs.getInt(6) + "'");
+				while (rs_countries.next()) {
+					out.println("Citizenship : "
+							+ rs_countries.getString(1) + "<br>");
+				}
+
+				rs_spec = stmt1
+						.executeQuery("SELECT specialization FROM specializations where s_id ='"
+								+ rs.getInt(8) + "'");
+				while (rs_spec.next()) {
+					out.println("Specialization : "
+							+ rs_spec.getString(1) + "<br>");
+				}
+
+				rs_address = stmt2
+						.executeQuery("SELECT * FROM address where a_id ='"
+								+ rs.getInt(7) + "'");
+
+				out.println("<br> Address of Applicant: <br>");
+
+				while (rs_address.next()) {
+					out.println("Street : " + rs_address.getString(2));
 					out.println("<br>");
-					out.println("First Name: " + rs.getString(2));
+					out.println("Zip : " + rs_address.getString(3));
 					out.println("<br>");
-					out.println("Last Name: " + rs.getString(3));
-					out.println("<br>");
-					out.println("MI: " + rs.getString(4));
-					out.println("<br>");
-					rs_countries = stmt1
-							.executeQuery("SELECT country FROM countries where c_id ='"
-									+ rs.getInt(5) + "'");
-					while (rs_countries.next()) {
-						out.println("Residence : "
-								+ rs_countries.getString(1) + " ");
+					if (rs_address.getString(4) != null) {
+						out.println("State : "
+								+ rs_address.getString(4));
 					}
+					out.println("Area Code : "
+							+ rs_address.getString(5));
 					out.println("<br>");
-
-					rs_countries = stmt1
-							.executeQuery("SELECT country FROM countries where c_id ='"
-									+ rs.getInt(6) + "'");
-					while (rs_countries.next()) {
-						out.println("Citizenship : "
-								+ rs_countries.getString(1) + " ");
+					out.println("City : " + rs_address.getString(6));
+					out.println("<br>");
+					if (rs_address.getString(7) != null) {
+						out.println("Telephone Code : "
+								+ rs_address.getString(7));
 					}
-					out.println("<br>");
-					out.println(spec + "<br>");
 
-					rs_address = stmt2
-							.executeQuery("SELECT * FROM address where a_id ='"
-									+ rs.getInt(7) + "'");
+				}
 
-					out.println("<br> Address of Applicant: <br>");
+				out.println("<br>Degrees of the Applicant: <br>");
 
-					while (rs_address.next()) {
-						out.println("Street : "
-								+ rs_address.getString(2));
-						out.println("<br>");
-						out.println("Zip : " + rs_address.getString(3));
-						out.println("<br>");
-						if (rs_address.getString(4) != null) {
-							out.println("State : "
-									+ rs_address.getString(4));
+				rs_pid = stmt2
+						.executeQuery("SELECT degree FROM has_degree where personal ='"
+								+ rs.getString(1) + "'");
+				while (rs_pid.next()) {
+					rs_degree = stmt1
+							.executeQuery("SELECT * FROM degrees where d_id='"
+									+ rs_pid.getInt(1) + "'");
+					while (rs_degree.next()) {
+						rs_uni = stmt3
+								.executeQuery("SELECT university FROM universities where u_id ='"
+										+ rs_degree.getInt(2) + "'");
+						while (rs_uni.next()) {
+							out.println("University : "
+									+ rs_uni.getString(1));
 						}
-						out.println("Area Code : "
-								+ rs_address.getString(5));
 						out.println("<br>");
-						out.println("City : " + rs_address.getString(6));
+						rs_mj = stmt3
+								.executeQuery("SELECT major FROM majors where m_id ='"
+										+ rs_degree.getInt(3) + "'");
+						while (rs_mj.next()) {
+							out.println("Major : " + rs_mj.getString(1));
+						}
 						out.println("<br>");
-						if (rs_address.getString(7) != null) {
-							out.println("Telephone Code : "
-									+ rs_address.getString(7));
+						out.println("Title : " + rs_degree.getString(4));
+						out.println("<br>");
+						out.println("Award Month/Year : "
+								+ rs_degree.getString(5) + "/"
+								+ rs_degree.getString(6));
+						out.println("<br>");
+						out.println("GPA : " + rs_degree.getString(7));
+					}
+					out.println("<br>");
+				}
+				out.println("<br>");
+			} // for while ( rs.next() )
+		} else { // spec == null and major is not null
+			rs_param = stmt4
+					.executeQuery("SELECT m_id FROM majors where major = '"
+							+ major + "'");
+
+			rs_param.next();
+			rs_param_1 = stmt5
+					.executeQuery("SELECT d_id FROM degrees where major = '"
+							+ rs_param.getInt(1) + "'");
+			while (rs_param_1.next()) {
+				rs_param_2 = stmt6
+						.executeQuery("SELECT personal FROM has_degree where degree = '"
+								+ rs_param_1.getInt(1) + "'");
+				rs_param_2.next() ;
+					rs = stmt
+							.executeQuery("SELECT * FROM personal_info where p_id = '"
+									+ rs_param_2.getInt(1) + "'");
+
+					while (rs.next()) {
+
+						out.println("Name of the Applicant: ");
+						out.println("<br>");
+						out.println("First Name: " + rs.getString(2));
+						out.println("<br>");
+						out.println("Last Name: " + rs.getString(3));
+						out.println("<br>");
+						out.println("MI: " + rs.getString(4));
+						out.println("<br>");
+						rs_countries = stmt1
+								.executeQuery("SELECT country FROM countries where c_id ='"
+										+ rs.getInt(5) + "'");
+						while (rs_countries.next()) {
+							out.println("Residence : "
+									+ rs_countries.getString(1) + " ");
+						}
+						out.println("<br>");
+
+						rs_countries = stmt1
+								.executeQuery("SELECT country FROM countries where c_id ='"
+										+ rs.getInt(6) + "'");
+						while (rs_countries.next()) {
+							out.println("Citizenship : "
+									+ rs_countries.getString(1)
+									+ "<br>");
 						}
 
-					}
+						rs_spec = stmt1
+								.executeQuery("SELECT specialization FROM specializations where s_id ='"
+										+ rs.getInt(8) + "'");
 
-					out.println("<br>Degrees of the Applicant: <br>");
+						while (rs_spec.next()) {
+							out.println("Specialization : "
+									+ rs_spec.getString(1) + "<br>");
+						}
 
-					rs_pid = stmt2
-							.executeQuery("SELECT degree FROM has_degree where personal ='"
-									+ rs.getString(1) + "'");
-					while (rs_pid.next()) {
-						rs_degree = stmt1
-								.executeQuery("SELECT * FROM degrees where d_id='"
-										+ rs_pid.getInt(1) + "'");
-						while (rs_degree.next()) {
-							rs_uni = stmt3
-									.executeQuery("SELECT university FROM universities where u_id ='"
-											+ rs_degree.getInt(2) + "'");
-							while (rs_uni.next()) {
-								out.println("University : "
-										+ rs_uni.getString(1));
+						rs_address = stmt2
+								.executeQuery("SELECT * FROM address where a_id ='"
+										+ rs.getInt(7) + "'");
+
+						out.println("<br> Address of Applicant: <br>");
+
+						while (rs_address.next()) {
+							out.println("Street : "
+									+ rs_address.getString(2));
+							out.println("<br>");
+							out.println("Zip : "
+									+ rs_address.getString(3));
+							out.println("<br>");
+							if (rs_address.getString(4) != null) {
+								out.println("State : "
+										+ rs_address.getString(4));
+							}
+							out.println("Area Code : "
+									+ rs_address.getString(5));
+							out.println("<br>");
+							out.println("City : "
+									+ rs_address.getString(6));
+							out.println("<br>");
+							if (rs_address.getString(7) != null) {
+								out.println("Telephone Code : "
+										+ rs_address.getString(7));
+							}
+
+						}
+
+						out.println("<br>Degrees of the Applicant: <br>");
+
+						rs_pid = stmt2
+								.executeQuery("SELECT degree FROM has_degree where personal ='"
+										+ rs.getString(1) + "'");
+
+						while (rs_pid.next()) {
+							rs_degree = stmt1
+									.executeQuery("SELECT * FROM degrees where d_id='"
+											+ rs_pid.getInt(1) + "'");
+							while (rs_degree.next()) {
+								rs_uni = stmt3
+										.executeQuery("SELECT university FROM universities where u_id ='"
+												+ rs_degree.getInt(2)
+												+ "'");
+								while (rs_uni.next()) {
+									out.println("University : "
+											+ rs_uni.getString(1));
+								}
+								out.println("<br>");
+								rs_mj = stmt3
+										.executeQuery("SELECT major FROM majors where m_id ='"
+												+ rs_degree.getInt(3)
+												+ "'");
+								while (rs_mj.next()) {
+									out.println("Major : "
+											+ rs_mj.getString(1));
+								}
+								out.println("<br>");
+								out.println("Title : "
+										+ rs_degree.getString(4));
+								out.println("<br>");
+								out.println("Award Month/Year : "
+										+ rs_degree.getString(5) + "/"
+										+ rs_degree.getString(6));
+								out.println("<br>");
+								out.println("GPA : "
+										+ rs_degree.getString(7));
 							}
 							out.println("<br>");
-							rs_mj = stmt3
-									.executeQuery("SELECT major FROM majors where m_id ='"
-											+ rs_degree.getInt(3) + "'");
-							while (rs_mj.next()) {
-								out.println("Major : "
-										+ rs_mj.getString(1));
-							}
-							out.println("<br>");
-							out.println("Title : "
-									+ rs_degree.getString(4));
-							out.println("<br>");
-							out.println("Award Month/Year : "
-									+ rs_degree.getString(5) + "/"
-									+ rs_degree.getString(6));
-							out.println("<br>");
-							out.println("GPA : "
-									+ rs_degree.getString(7));
 						}
 						out.println("<br>");
 					}
-					out.println("<br>");
-				} // for while ( rs.next() )
+				
 			}
 		}
+
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
@@ -197,6 +333,13 @@
 			}
 			rs_degree = null;
 		}
+		if (rs_degree_major != null) {
+			try {
+				rs_degree_major.close();
+			} catch (SQLException e) {
+			}
+			rs_degree_major = null;
+		}
 		if (rs_countries != null) {
 			try {
 				rs_countries.close();
@@ -224,6 +367,20 @@
 			} catch (SQLException e) {
 			}
 			rs_param = null;
+		}
+		if (rs_param_1 != null) {
+			try {
+				rs_param_1.close();
+			} catch (SQLException e) {
+			}
+			rs_param_1 = null;
+		}
+		if (rs_param_2 != null) {
+			try {
+				rs_param_2.close();
+			} catch (SQLException e) {
+			}
+			rs_param_2 = null;
 		}
 		if (rs_pid != null) {
 			try {

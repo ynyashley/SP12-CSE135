@@ -23,78 +23,81 @@
 		conn = DriverManager
 				.getConnection("jdbc:postgresql://localhost:5432/Applicant?"
 						+ "user=postgres&password=1234");
-		// Create the support to get the Vector of the specializations 
 		Statement stmt = conn.createStatement();
 		ResultSet majors = stmt.executeQuery("SELECT * FROM majors");
-		ArrayList major_list = new ArrayList();
+		// Create two array list to store the major and its id which make the rest more 
+		// convenience
+		
+		ArrayList major_list = new ArrayList(); 
 		ArrayList m_id_list = new ArrayList();
 		while (majors.next()) {
 			m_id_list.add((majors.getInt(1)));
 			major_list.add((majors.getString(2)));
 		}
 
+		// This ArrayList is for storing the p_id when we try to find the depulicate p_id
 		ArrayList result_pid = new ArrayList();
-		ArrayList result_mj = new ArrayList();
 
 		// Create the statement and result, Ready for the SQL Operation 
 		Statement stmt1 = conn.createStatement();
-		//rs = stmt.executeQuery("SELECT specialization FROM specializations" ) ;
 		int counter = 0;
 		Statement stmt2 = conn.createStatement();
 		Statement stmt3 = conn.createStatement();
 
 		for (int i = 0; i < m_id_list.size(); i++) {
-			out.println(major_list.get(i));
-			counter = 0;
+			counter = 0; // reset the counter to zero
+			out.println(major_list.get(i)) ; // get the name of the major
+			result_pid.clear() ;// reset the result_pid arrayList
+			// write the query for finding the personal (p_id) for specific major 
 			ResultSet degree_id = stmt1
-					.executeQuery("SELECT d_id from degrees where major = '"
+					.executeQuery("SELECT personal from has_degree Inner Join degrees on degrees.major = has_degree.degree where degrees.major = '"
 							+ m_id_list.get(i) + "'");
 			while (degree_id.next()) {
-				ResultSet hd_id = stmt2
-						.executeQuery("SELECT hd_id from has_degree where degree = '"
-								+ degree_id.getInt(1) + "'");
-				while (hd_id.next()) {
-					if (result_pid.contains(hd_id.getInt(1)) == false
-							&& result_mj.contains(major_list.get(i)) == false ) {
-						result_pid.add(hd_id);
-						result_mj.add(major_list.get(i));
-						counter++;
-					}
+				// it might have one p_id has multi degree with same major and we count it as one. 
+				// if the p_id is not found in result_pid, put p_id into result_pid 
+				if (result_pid.contains(degree_id.getInt(1)) == false ) {
+					result_pid.add(degree_id.getInt(1));
+					counter++; // increase the counter 
 				}
-
 			}
-%> <a href="application.jsp?major=<%=major_list.get(i)%>"><%=counter%></a>
-<br>
-
-<%
-	}
-	} catch (SQLException e) {
-		throw new RuntimeException(e);
-	} finally {
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException e) {
-			}
-			rs = null;
-		}
-		if (pstmt != null) {
-			try {
-				pstmt.close();
-			} catch (SQLException e) {
-			}
-			pstmt = null;
-		}
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-			}
-			conn = null;
+			if ( counter ==  0 ){ // if it is zero , dont display the hyperlink
+				%>
+				0
+				<% 
+			} else {// else display the counter as hyperlink
+			%> 			
+			<a href="Application.jsp?major=<%=major_list.get(i)%>"><%=counter%></a>
+		<br>
+		<%}
 		}
 
-	}
-%>
+ 	} catch (SQLException e) {
+ 		throw new RuntimeException(e);
+ 	} finally {
+ 		if (rs != null) {
+ 			try {
+ 				rs.close();
+ 			} catch (SQLException e) {
+ 			}
+ 			rs = null;
+ 		}
+ 		if (pstmt != null) {
+ 			try {
+ 				pstmt.close();
+ 			} catch (SQLException e) {
+ 			}
+ 			pstmt = null;
+ 		}
+ 		if (conn != null) {
+ 			try {
+ 				conn.close();
+ 			} catch (SQLException e) {
+ 			}
+ 			conn = null;
+ 		}
+
+ 	}
+ %>
 </FORM>
 </body>
 </html>

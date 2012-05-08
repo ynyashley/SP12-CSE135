@@ -202,7 +202,8 @@ Degrees of the Applicant: <br>
 
 	}
 %>
-
+<a href="Application.jsp">Back</a>
+		<br>
 
 </body>
 </html>
