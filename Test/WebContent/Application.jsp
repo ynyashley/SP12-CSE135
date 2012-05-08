@@ -56,7 +56,7 @@
 			while (rs.next()) {
 				FullName = rs.getString(2) + " " + rs.getString(3)
 						+ " " + rs.getString(4);
-%> <a href="Applicant_info.jsp?p_id=<%=rs.getInt(1)%>"><%=FullName%></a>
+%> <a href="Applicant_info.jsp?p_id=<%=rs.getInt(1)%>"><%=FullName%></a>  <!-- Display the name as a hyperlink so it would directly go to specific applicant information when the user click on the name-->
 <br>
 <%
 	}
@@ -73,7 +73,7 @@
 							+ rs_param.getInt(1) + "'");
 			// print out the applicant information
 			while (rs.next()) {
-
+				
 				out.println("Name of the Applicant: ");
 				out.println("<br>");
 				out.println("First Name: " + rs.getString(2));
@@ -98,7 +98,7 @@
 					out.println("Citizenship : "
 							+ rs_countries.getString(1) + "<br>");
 				}
-
+				// print out the specialization of applicant
 				rs_spec = stmt1
 						.executeQuery("SELECT specialization FROM specializations where s_id ='"
 								+ rs.getInt(8) + "'");
@@ -112,7 +112,7 @@
 								+ rs.getInt(7) + "'");
 
 				out.println("<br> Address of Applicant: <br>");
-
+				// display the address of applicant 
 				while (rs_address.next()) {
 					out.println("Street : " + rs_address.getString(2));
 					out.println("<br>");
@@ -135,9 +135,9 @@
 				}
 
 				out.println("<br>Degrees of the Applicant: <br>");
-				// print out the degree information of applicant
+				// print out the applicant's degree information including GPA, university, title, year and month
 				rs_pid = stmt2
-						.executeQuery("SELECT degree FROM has_degree where personal_id ='"
+						.executeQuery("SELECT degree FROM has_degree where personal ='"
 								+ rs.getString(1) + "'");
 				while (rs_pid.next()) {
 					rs_degree = stmt1
@@ -184,10 +184,9 @@
 							+ rs_param.getInt(1) + "'");
 			ArrayList temp = new ArrayList() ; // this arraylist is for preventing depulicated id to print out again 
 			while (rs_param_1.next()) {
-				
-				//	out.println("ADDED " + rs_param_1.getInt(1) + "<br>") ;
+				// try to find out all the degrees with the specific major 
 				rs_param_2 = stmt6
-						.executeQuery("SELECT personal_id FROM has_degree where degree = '"
+						.executeQuery("SELECT personal FROM has_degree where degree = '"
 								+ rs_param_1.getInt(1) + "'");
 				rs_param_2.next() ;
 				if ( temp.contains(rs_param_2.getInt(1) )== false ) {
@@ -225,7 +224,7 @@
 									+ rs_countries.getString(1)
 									+ "<br>");
 						}
-
+						// display the specialization of the applicant
 						rs_spec = stmt1
 								.executeQuery("SELECT specialization FROM specializations where s_id ='"
 										+ rs.getInt(8) + "'");
@@ -240,7 +239,7 @@
 										+ rs.getInt(7) + "'");
 
 						out.println("<br> Address of Applicant: <br>");
-
+						// display the address of the applicant 
 						while (rs_address.next()) {
 							out.println("Street : "
 									+ rs_address.getString(2));
@@ -264,11 +263,11 @@
 							}
 
 						}
-						// print out the degree information of applicant
+						// print out the degree information of applicant including gpa, major, university, graduated year, month and title 
 						out.println("<br>Degrees of the Applicant: <br>");
 
 						rs_pid = stmt2
-								.executeQuery("SELECT degree FROM has_degree where personal_id ='"
+								.executeQuery("SELECT degree FROM has_degree where personal ='"
 										+ rs.getString(1) + "'");
 
 						while (rs_pid.next()) {
@@ -311,7 +310,7 @@
 				}
 			}
 		}
-	// close the result set and pstmt 
+	// close the result sets and prepare statement 
 	} catch (SQLException e) { 
 		throw new RuntimeException(e);
 	} finally {

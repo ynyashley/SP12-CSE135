@@ -297,7 +297,7 @@
     		p_id =  rs.getInt("p_id"); 
     		
     		//Inserting into has_degree table
-            pstmt = conn.prepareStatement("INSERT INTO has_degree (personal_id, degree) VALUES (?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO has_degree (personal, degree) VALUES (?, ?)");
     		/*
     		 * With the d_id ArrayList that we have populated earlier, we can insert the p_id into
     		 * our has_degree table so we can match up the applicant and the all the degrees that

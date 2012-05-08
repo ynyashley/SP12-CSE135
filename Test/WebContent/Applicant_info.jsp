@@ -36,9 +36,10 @@
 		Statement stmt1 = conn.createStatement();
 		Statement stmt2 = conn.createStatement();
 		Statement stmt3 = conn.createStatement();
-		
+		// since we just need to print out one specific applicant so we just use the p_id to find the applicant
 		rs = stmt.executeQuery("SELECT * FROM personal_info Where p_id = '"+ id +"'" );
 		while (rs.next()) {
+			// print out the personal information of the applicant
 			out.println("First Name: " +rs.getString(2)) ;
 			out.println("<br>") ;
 			out.println("Last Name: " +rs.getString(3)) ;
@@ -48,11 +49,12 @@
 			rs_countries = stmt1
 					.executeQuery("SELECT country FROM countries where c_id ='"
 							+ rs.getInt(5) + "'");
+			// display the residence(country) of applicant
 			while (rs_countries.next()) {
 				out.println("Residence : " + rs_countries.getString(1) + " ");
 			}
 			out.println("<br>") ;
-			
+			// display the citizenship(country) of applicant 
 			rs_countries = stmt1
 					.executeQuery("SELECT country FROM countries where c_id ='"
 							+ rs.getInt(6) + "'");
@@ -69,6 +71,7 @@
 			rs_address = stmt2
 					.executeQuery("SELECT * FROM address where a_id ='"
 							+ rs.getInt(7) + "'");
+			// now we print out the address of the applicant
 %> <br>
 Address of Applicant: <br>
 <%
@@ -89,11 +92,12 @@ Address of Applicant: <br>
 				}
 
 			}
+// display all the degrees of applicant
 %> <br>
 Degrees of the Applicant: <br>
 <%
 	rs_pid = stmt2
-					.executeQuery("SELECT degree FROM has_degree where personal_id ='"
+					.executeQuery("SELECT degree FROM has_degree where personal ='"
 							+ rs.getString(1) + "'");
 			while (rs_pid.next()) {
 				rs_degree = stmt1
@@ -124,7 +128,7 @@ Degrees of the Applicant: <br>
 				out.println("<br>") ; 
 			}
 			
-
+// close the result set and prepare statement
 	} // for while ( rs.next() )
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
