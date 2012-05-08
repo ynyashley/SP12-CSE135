@@ -32,7 +32,9 @@
 		ArrayList m_id_list = new ArrayList();
 		while (majors.next()) {
 			m_id_list.add((majors.getInt(1)));
+			
 			major_list.add((majors.getString(2)));
+			//out.println(majors.getString(2) + " " + majors.getInt(1)+ "<br>") ;
 		}
 
 		// This ArrayList is for storing the p_id when we try to find the depulicate p_id
@@ -43,18 +45,21 @@
 		int counter = 0;
 		Statement stmt2 = conn.createStatement();
 		Statement stmt3 = conn.createStatement();
-
+		//out.println("size " + m_id_list.size()+ "<br>") ;
 		for (int i = 0; i < m_id_list.size(); i++) {
 			counter = 0; // reset the counter to zero
 			out.println(major_list.get(i)) ; // get the name of the major
 			result_pid.clear() ;// reset the result_pid arrayList
 			// write the query for finding the personal (p_id) for specific major 
 			ResultSet degree_id = stmt1
-					.executeQuery("SELECT personal from has_degree Inner Join degrees on degrees.major = has_degree.degree where degrees.major = '"
+					.executeQuery("SELECT personal from has_degree,degrees where degrees.major = '"
 							+ m_id_list.get(i) + "'");
 			while (degree_id.next()) {
+				//out.println("personal id " + degree_id.getInt(1)) ;
+				//out.println(degree_id.getInt(1) +"<br>") ;
 				// it might have one p_id has multi degree with same major and we count it as one. 
 				// if the p_id is not found in result_pid, put p_id into result_pid 
+				//out.println("major id  " + m_id_list.get(i) + "Name id"+ degree_id.getInt(1) + "<br>") ;
 				if (result_pid.contains(degree_id.getInt(1)) == false ) {
 					result_pid.add(degree_id.getInt(1));
 					counter++; // increase the counter 
@@ -63,6 +68,7 @@
 			if ( counter ==  0 ){ // if it is zero , dont display the hyperlink
 				%>
 				0
+				<br>
 				<% 
 			} else {// else display the counter as hyperlink
 			%> 			
