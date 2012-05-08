@@ -19,15 +19,16 @@
 		String ctc = (String)a.getTel();
 		String residence = (String)session.getAttribute("residence");
 		String specialization = (String)session.getAttribute("specialization"); 
-		String uni, major, title, month, year, gpa;
+		String uni, major, title, month, year, gpa, loc;
 	%>
 	<!-- Initiate Connection to Postgres SQL Server -->
 	<%
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
-		int student_id ;
-		int degree_id ;
+		int p_id, u_id, m_id;
+		ArrayList <Integer> d_id = new ArrayList <Integer>();
 		try 
 		{
 			// Registering Postgresql JDBC driver with the DriverManager
@@ -68,14 +69,14 @@
             {
             	pstmt.setString(6, ctc);
             }
-            int rowCount = pstmt.executeUpdate();
+            pstmt.executeUpdate();
     		ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray");
     		
     		
     		// insert degree SQL begin
     		pstmt = conn
             		.prepareStatement("INSERT INTO degrees (uni, major, title, month_award, year_award, gpa)" 
-                                           +" VALUES (?, ?, ?, ?, ?, ?)");
+                                           +" VALUES (?, ?, ?, ?, ?, ?) returning d_id");
     		// end
             for(int i = 0; i < d_array.size(); i++)
             {
@@ -85,36 +86,109 @@
             	month = d_array.get(i).getMonth();
             	year = d_array.get(i).getYear();
             	gpa = d_array.get(i).getGPA();
+            	loc = d_array.get(i).getLocation();
             	
-
-        		rs = statement.executeQuery("SELECT u_id FROM Universities WHERE university='"+ uni + "'");
-            	while(rs.next())
+            	try
             	{
-            		pstmt.setInt(1, rs.getInt("u_id"));
+        			rs = statement.executeQuery("SELECT u_id FROM Universities WHERE university='"+ uni + "'");
+            		while(rs.next())
+            		{
+            			pstmt.setInt(1, rs.getInt("u_id"));
             
+            		}
+            		try
+            		{
+						rs = statement.executeQuery("SELECT m_id FROM Majors WHERE major='"+ major + "'");
+            		
+            			while(rs.next())
+						{
+        					pstmt.setInt(2, rs.getInt("m_id"));
+						}
+        				pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					out.println("try " + i);
+    					d_id.add(rs.getInt("d_id"));
+            		}
+            		catch(SQLException e)
+            		{
+            			pstmt2 = conn.prepareStatement("INSERT INTO Majors (major) Values (?) returning m_id");
+            			pstmt2.setString(1, major);
+            			rs = pstmt2.executeQuery();
+                		rs.next();
+                		m_id =  rs.getInt("m_id");
+                		
+                		pstmt.setInt(2, m_id);
+                		pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					out.println("catch " + i);
+    					d_id.add(rs.getInt("d_id"));
+            		}
             	}
-				rs = statement.executeQuery("SELECT m_id FROM Majors WHERE major='"+ major + "'");
-				while(rs.next())
-				{
-        			pstmt.setInt(2, rs.getInt("m_id"));
-				}
-        		pstmt.setString(3, title);
-        		pstmt.setString(4, month);
-        		pstmt.setString(5, year);
-        		pstmt.setString(6, gpa);
-            	pstmt.executeUpdate();
+            	catch(SQLException e)
+            	{
+            		pstmt = conn.prepareStatement("INSERT INTO universities (university, country_state)"
+            	                                 + "VALUES (?, ?) returning u_id");
+            		pstmt.setString(1, uni);
+            		pstmt.setString(2, loc);
+            		rs = pstmt.executeQuery();
+            		rs.next();
+            		u_id =  rs.getInt("u_id");
+            		pstmt = conn
+                    		.prepareStatement("INSERT INTO degrees (uni, major, title, month_award, year_award, gpa)" 
+                                                   +" VALUES (?, ?, ?, ?, ?, ?) returning d_id");
+            		pstmt.setInt(1, u_id);
+            		//try
+            		//{
+            			rs = statement.executeQuery("SELECT m_id FROM Majors WHERE major='"+ major + "'");
+						while(rs.next())
+						{
+        					pstmt.setInt(2, rs.getInt("m_id"));
+						}
+        				pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					d_id.add(rs.getInt("d_id"));
+            		//}
+            		/* catch(SQLException e2)
+            		//{
+            			pstmt2 = conn.prepareStatement("INSERT INTO Majors (major) Values (?) returning m_id");
+            			pstmt2.setString(1, major);
+            			rs = pstmt2.executeQuery();
+                		rs.next();
+                		m_id =  rs.getInt("m_id");
+                		
+                		pstmt.setInt(2, m_id);
+                		pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					d_id.add(rs.getInt("d_id"));
+            		} */
+            	}
             }
            
             /* Inserting into personal_info table */
             
     		pstmt = conn
             		.prepareStatement("INSERT INTO personal_info (first_name, last_name, MI, residence, citizenship, address, spec)" 
-                                           +" VALUES (?, ?, ?, ?, ?, ?, ?)");
+                                           +" VALUES (?, ?, ?, ?, ?, ?, ?) returning p_id");
     		
     		pstmt.setString(1, first);
     		pstmt.setString(2, last);
     		pstmt.setString(3, middle);
-    		
     		rs = statement.executeQuery("SELECT c_id FROM Countries WHERE country='"+ residence + "'");
     		rs.next();
     		pstmt.setInt(4, rs.getInt("c_id"));
@@ -134,10 +208,10 @@
     		else
     		{
     			rs = statement.executeQuery("SELECT a_id FROM Address WHERE street='" + add + "'" +
-						"AND zip = '" + zip + "'" +
-						"AND city = '" + city + "'" +
-						"AND area_code = '" + area + "'" +
-						"AND tel_code = '" + ctc + "'");
+											"AND zip = '" + zip + "'" +
+											"AND city = '" + city + "'" +
+											"AND area_code = '" + area + "'" +
+											"AND tel_code = '" + ctc + "'");
 				rs.next();
 				pstmt.setInt(6, rs.getInt("a_id"));
     		}
@@ -145,44 +219,15 @@
     		rs = statement.executeQuery("SELECT s_id FROM Specializations WHERE specialization='"+ specialization + "'");
     		rs.next();
     		pstmt.setInt(7, rs.getInt("s_id"));
-    		pstmt.executeUpdate();
-    		
-            rs = statement.executeQuery("SELECT p_id FROM personal_info where first_name = '" + first +"'" +
-            		"AND last_name ='"+last+"'" +
-            		"AND mi ='"+middle + "'") ;
-            rs.next() ;
-            student_id = rs.getInt("p_id") ;
-            
-            
-            pstmt = conn
-            		.prepareStatement("INSERT INTO has_degree (personal, degree)" 
-                                           +" VALUES (?, ?)");
-            for(int i = 0; i < d_array.size(); i++)
+    		rs = pstmt.executeQuery();
+    		rs.next();
+    		p_id =  rs.getInt("p_id"); 
+    		         
+            pstmt = conn.prepareStatement("INSERT INTO has_degree (personal, degree) VALUES (?, ?)");
+            for(int i = 0; i < d_id.size(); i++)
             {
-            	uni = d_array.get(i).getUniversity();
-            	major = d_array.get(i).getDiscipline();
-            	title = d_array.get(i).getTitle();
-            	month = d_array.get(i).getMonth();
-            	year = d_array.get(i).getYear();
-            	gpa = d_array.get(i).getGPA();
-            	
-
-            	rs = statement.executeQuery("SELECT p_id FROM personal_info where first_name = '" + first +"'" +
-                 		"AND last_name ='"+last+"'" +
-                 		"AND mi ='"+middle + "'") ;
-            	while(rs.next())
-            	{
-            		pstmt.setInt(1, rs.getInt("p_id"));
-            
-            	}
-            	rs = statement.executeQuery("SELECT d_id FROM degrees where gpa='" + gpa +"'" +
-                  		"AND title ='"+title+"'" +
-                  		"AND month_award ='"+ month + "'" + 
-                  		"AND year_award ='"+ year +"'") ;
-				while(rs.next())
-				{
-					pstmt.setInt(2, rs.getInt("d_id"));
-				}
+            	pstmt.setInt(1, p_id);
+            	pstmt.setInt(2, d_id.get(i));
             	pstmt.executeUpdate();
             }
             
@@ -225,6 +270,14 @@
 				catch (SQLException e) {} // Ignore
 				pstmt = null;
 			}
+			if (pstmt2 != null) 
+			{
+				try {
+					pstmt2.close();
+				} 
+				catch (SQLException e) {} // Ignore
+				pstmt2 = null;
+			}
 			if (conn != null) 
 			{
 				try {
@@ -235,6 +288,6 @@
 			}
 		}
 	%>
-	Your application has been successfully sent. Your application ID is <%=student_id %>.
+	Your application has been successfully sent. Your application ID is <%=p_id %>.
 </body>
 </html>
