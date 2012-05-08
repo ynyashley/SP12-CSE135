@@ -1,19 +1,36 @@
-<%@page import="support.*,java.util.*"%>
+<%@page import="support.*,java.util.*, java.sql.*"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Confirmation</title>
+<title>Confirmation Page</title>
 </head>
 <body>
-	<%@ page import="java.sql.*"%>
-
+	<!-- Obtain the objects/info that we have initiated in the previous pages -->
 	<%
-		// Connect to the postgreSQL             
+		String first = (String)session.getAttribute("first");
+		String middle = (String)session.getAttribute("middle");
+		String last = (String)session.getAttribute("last");
+		String citizenship = (String)session.getAttribute("citizenship");
+		Address a = (Address)session.getAttribute("address");
+		String add = (String)a.getAddress();
+		String city = (String)a.getCity();
+		String zip = (String)a.getZip();
+		String area = (String)a.getAreaCode();
+		String state = (String)a.getState();
+		String ctc = (String)a.getTel();
+		String residence = (String)session.getAttribute("residence");
+		String specialization = (String)session.getAttribute("specialization"); 
+		String uni, major, title, month, year, gpa, loc;
+	%>
+	<!-- Initiate Connection to Postgres SQL Server -->
+	<%
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
-
-		try {
+		int p_id, u_id, m_id;
+		ArrayList <Integer> d_id = new ArrayList <Integer>();
+		try 
+		{
 			// Registering Postgresql JDBC driver with the DriverManager
 			Class.forName("org.postgresql.Driver");
 
@@ -21,218 +38,243 @@
 			conn = DriverManager
 					.getConnection("jdbc:postgresql://localhost:5432/Applicant?"
 							+ "user=postgres&password=1234");
+			Statement statement = conn.createStatement();
+			
+			// Begin transaction
+            conn.setAutoCommit(false);
 
-			// Insert Applicant information
+            // Create the prepared statement and use it to
+            // INSERT student values INTO the students table.
+            pstmt = conn
+            .prepareStatement("INSERT INTO Address (street, zip, state, area_code, city, tel_code)" 
+                               +" VALUES (?, ?, ?, ?, ?, ?)");
 
-			Statement stmt = conn.createStatement();
+            pstmt.setString(1, add);
+            pstmt.setString(2, zip);
+            if(residence.equals("United States"))
+            {
+            	pstmt.setString(3, state);
+            }
+            else
+            {
+            	pstmt.setString(3, null);
+            }
+            pstmt.setString(4, area);
+            pstmt.setString(5, city);
+            if(residence.equals("United States"))
+            {
+            	pstmt.setString(6, null);
+            }
+            else
+            {
+            	pstmt.setString(6, ctc);
+            }
+            pstmt.executeUpdate();
+    		ArrayList<Degree> d_array = (ArrayList<Degree>)session.getAttribute("degreeArray");
+    		
+    		
+    		// insert degree SQL begin
+    		pstmt = conn
+            		.prepareStatement("INSERT INTO degrees (uni, major, title, month_award, year_award, gpa)" 
+                                           +" VALUES (?, ?, ?, ?, ?, ?) returning d_id");
+    		// end
+            for(int i = 0; i < d_array.size(); i++)
+            {
+            	uni = d_array.get(i).getUniversity();
+            	major = d_array.get(i).getDiscipline();
+            	title = d_array.get(i).getTitle();
+            	month = d_array.get(i).getMonth();
+            	year = d_array.get(i).getYear();
+            	gpa = d_array.get(i).getGPA();
+            	loc = d_array.get(i).getLocation();
+            	
+            	try
+            	{
+        			rs = statement.executeQuery("SELECT u_id FROM Universities WHERE university='"+ uni + "'" +
+        					                   "AND country_state= '" + loc + "'");
+        			if(!rs.next())
+            		{
+            			throw new SQLException();
+            		}
+            		pstmt.setInt(1, rs.getInt("u_id"));
+					try
+					{
+						rs = statement.executeQuery("SELECT m_id FROM Majors WHERE major='"+ major + "'");
+            			if(!rs.next())
+						{
+        					throw new SQLException();
+						}
+            			pstmt.setInt(2, rs.getInt("m_id"));
+            			pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					d_id.add(rs.getInt("d_id"));
+					}
+					catch(SQLException e)
+					{
+						pstmt2 = conn.prepareStatement("INSERT INTO Majors (major) Values (?) returning m_id");
+						pstmt2.setString(1, major);
+						rs = pstmt2.executeQuery();
+						rs.next();
+						m_id = rs.getInt("m_id");
+						pstmt.setInt(2, m_id);
+            			pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					d_id.add(rs.getInt("d_id"));
+					}
+            	}
+            	catch(SQLException e)
+            	{
+            		pstmt2 = conn.prepareStatement("INSERT INTO universities (university, country_state)"
+            	                                 + "VALUES (?, ?) returning u_id");
+            		pstmt2.setString(1, uni);
+            		pstmt2.setString(2, loc);
+            		rs = pstmt2.executeQuery();
+            		rs.next();
+            		u_id =  rs.getInt("u_id");
+            		pstmt.setInt(1, u_id);
+            		try
+            		{
+            			rs = statement.executeQuery("SELECT m_id FROM Majors WHERE major='"+ major + "'");
+						if(!rs.next())
+						{
+        					throw new SQLException();
+						}
+						pstmt.setInt(2, rs.getInt("m_id"));
+        				pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					d_id.add(rs.getInt("d_id"));
+            		}
+            		catch(SQLException e1)
+            		{
+            			pstmt2 = conn.prepareStatement("INSERT INTO Majors (major) Values (?) returning m_id");
+						pstmt2.setString(1, major);
+						rs = pstmt2.executeQuery();
+						rs.next();
+						m_id = rs.getInt("m_id");
+						pstmt.setInt(2, m_id);
+            			pstmt.setString(3, title);
+        				pstmt.setString(4, month);
+        				pstmt.setString(5, year);
+        				pstmt.setString(6, gpa);
+        				rs = pstmt.executeQuery();
+    					rs.next();
+    					d_id.add(rs.getInt("d_id"));
+            		}
+            	}
+            }
+           
+            /* Inserting into personal_info table */
+            
+    		pstmt = conn
+            		.prepareStatement("INSERT INTO personal_info (first_name, last_name, MI, residence, citizenship, address, spec)" 
+                                           +" VALUES (?, ?, ?, ?, ?, ?, ?) returning p_id");
+    		
+    		pstmt.setString(1, first);
+    		pstmt.setString(2, last);
+    		pstmt.setString(3, middle);
+    		rs = statement.executeQuery("SELECT c_id FROM Countries WHERE country='"+ residence + "'");
+    		rs.next();
+    		pstmt.setInt(4, rs.getInt("c_id"));
+    		rs = statement.executeQuery("SELECT c_id FROM Countries WHERE country='"+ citizenship + "'");
+    		rs.next();
+    		pstmt.setInt(5, rs.getInt("c_id"));
+    		if(residence.equals("United States"))
+    		{
+    			rs = statement.executeQuery("SELECT a_id FROM Address WHERE street='" + add + "'" +
+    										"AND zip = '" + zip + "'" +
+    										"AND state = '" + state + "'" +
+    										"AND area_code = '" + area + "'" +
+    										"AND city = '" + city + "'");
+    			rs.next();
+    			pstmt.setInt(6, rs.getInt("a_id"));
+    		}
+    		else
+    		{
+    			rs = statement.executeQuery("SELECT a_id FROM Address WHERE street='" + add + "'" +
+											"AND zip = '" + zip + "'" +
+											"AND city = '" + city + "'" +
+											"AND area_code = '" + area + "'" +
+											"AND tel_code = '" + ctc + "'");
+				rs.next();
+				pstmt.setInt(6, rs.getInt("a_id"));
+    		}
+    		
+    		rs = statement.executeQuery("SELECT s_id FROM Specializations WHERE specialization='"+ specialization + "'");
+    		rs.next();
+    		pstmt.setInt(7, rs.getInt("s_id"));
+    		rs = pstmt.executeQuery();
+    		rs.next();
+    		p_id =  rs.getInt("p_id"); 
+    		         
+            pstmt = conn.prepareStatement("INSERT INTO has_degree (personal, degree) VALUES (?, ?)");
+            for(int i = 0; i < d_id.size(); i++)
+            {
+            	pstmt.setInt(1, p_id);
+            	pstmt.setInt(2, d_id.get(i));
+            	pstmt.executeUpdate();
+            }
+            
+    		// Commit transaction 
+            conn.commit();
+            conn.setAutoCommit(true);
+			// Close the ResultSet
+			
+			rs.close();
 
-			//Get attributes from Address class
-			
-			Address a = (Address) session.getAttribute("address");
-			String add = (String) a.getAddress();
-			String city = (String) a.getCity();
-			String zip = (String) a.getZip();
-			String area = (String) a.getAreaCode();
-			String state = (String) a.getState();
-			String ctc = (String) a.getTel();
-			
-			// using the prepareStatement to insert the current address to the SQL table Address
-			pstmt = conn
-					.prepareStatement("INSERT INTO address (street, city, area_code,"
-							+ " zip, state, tele_code) VALUES (?,?,?,?,?,?)");
-			// SetString to SQL table
-			pstmt.setString(1, add);
-			pstmt.setString(2, city);
-			pstmt.setString(3, area);
-			pstmt.setString(4, zip);
-			// if the residence is not United State, store data "state" into the SQL Table and set tele_code to 0"
-			if (session.getAttribute("residence").equals("United States")) {
-				pstmt.setString(5, state);
-				pstmt.setString(6, "0");
+			// Close the Statement
+			statement.close();
 
-			} else {
-				// if the residence is not United States, save the tele code and set state to "0"
-				pstmt.setString(5, "0");
-				pstmt.setString(6, ctc);
-			}
-
-			pstmt.executeUpdate();
-			
-			// finish adding the address into the SQL table
-						
-			// Now Inserting the Applicant infromation to the SQL table personal_info
-			
-			pstmt = conn
-					.prepareStatement("INSERT INTO personal_info (first_name, last_name, MI, residence,"
-							+ " citizenship, address, spec) VALUES (?,?,?,?,?,?,?)");
-			// Get first name, last name, mi, from Session  
-			String first = (String)session.getAttribute("first") ;
-			String last = (String)session.getAttribute("last") ;
-			String middle = (String)session.getAttribute("middle") ;
-			String citizen =(String)session.getAttribute("citizenship") ;
-			String residence = (String)session.getAttribute("residence") ;
-			String special = (String)session.getAttribute("specialization") ;
-			
-			// use pstmt to insert the data to SQL table (personal_info)
-			pstmt.setString(1,first) ;
-			pstmt.setString(2,last) ;
-			pstmt.setString(3,middle) ;
-			
-			
-			// creat result set and statement for selecting the country from table countries 
-			Statement stmt5 = conn.createStatement();
-			ResultSet resi = stmt5
-			.executeQuery("SELECT c_id FROM countries WHERE country ='"
-					+ residence + "'");
-			resi.next();
-			// insert into personal_info 
-			pstmt.setInt(4,resi.getInt(1)) ;
-			
-			// creat result set and statement for selecting the country from table countries 
-			Statement stmt6 = conn.createStatement();
-			ResultSet citz = stmt6
-			.executeQuery("SELECT c_id FROM countries WHERE country ='"
-					+ citizen + "'");
-			citz.next();
-			// insert into personal_info
-			pstmt.setInt(5,citz.getInt(1)) ;
-			
-			// creat result set and statement for selecting the country from table countries 
-			Statement stmt7 = conn.createStatement();
-			ResultSet address_info = stmt7
-			.executeQuery("SELECT a_id FROM Address WHERE street ='"
-					+ a.getAddress() + "'");
-			address_info.next();
-			pstmt.setInt(6,address_info.getInt(1)) ;
-			
-			// creat result set and statement for selecting the specialization from table specialization 
-			Statement stmt8 = conn.createStatement();
-			ResultSet sp = stmt8
-			.executeQuery("SELECT s_id FROM specializations WHERE specialization ='"
-					+ special + "'");
-			sp.next();
-			pstmt.setInt(7,sp.getInt(1)) ;
-			
-			// execute the query ()
-			pstmt.executeUpdate();
-			
-			// Get degree from Session and start Inserting the degree to SQL table degrees
-			Degree d = (Degree) session.getAttribute("degree");
-			
-			String counter = (String) session.getAttribute("counter");
-			ArrayList<Degree> d_array = (ArrayList<Degree>) session
-					.getAttribute("degreeArray");
-			
-			String l, u, t, m, G, y, mo;
-			// create the statement for inserting the SQL table
-			Statement stmt1 = conn.createStatement();
-			Statement stmt2 = conn.createStatement();
-			Statement stmt3 = conn.createStatement();
-			Statement stmt4 = conn.createStatement();
-			Statement stmt9 = conn.createStatement();
-			
-			
-			/* REMEMBER 
-			Statement must be declare out side the for loop 
-			result set need to .next() before call .getInt()
-			execute the query after you finish add .
-			I know you can make it since I trust you =)
-			*/
-			
-			
-			for (int i = 0; i < d_array.size(); i++) {
-				//StringCount = Integer.toString(i+1) ;
-				pstmt = conn
-					.prepareStatement("INSERT INTO degrees (uni, major, title, month_award, year_award, gpa)"
-							+ ", address, spec VALUES (?,?,?,?,?,?,?,?)");
-				ResultSet uni = stmt1
-						.executeQuery("SELECT u_id FROM Universities WHERE university ='"
-								+ d_array.get(i).getUniversity() + "'");
-				// TODO: check if it is in the SQL table
-				uni.next();
-				
-				pstmt.setInt(1,uni.getInt(1));
-				
-				ResultSet major = stmt2
-						.executeQuery("SELECT m_id FROM Majors WHERE major ='"
-								+ d_array.get(i).getDiscipline() + "'");				
-				major.next();
-				pstmt.setInt(2, major.getInt(1));
-				
-				t = d_array.get(i).getTitle();
-				pstmt.setString(3, t);
-				
-				mo = d_array.get(i).getMonth();
-				pstmt.setString(4, mo);
-				y = d_array.get(i).getYear();
-				pstmt.setString(5, y);
-				
-				G = d_array.get(i).getGPA();
-				pstmt.setString(6, G);
-				
-				
-				pstmt.executeUpdate();
-			
-					
-				// Insert the relationship with d_id (table degrees)and p_id (table personal_info) 
-				
-				pstmt = conn
-				.prepareStatement("INSERT INTO has_degree (degree, personal)"
-						+ " VALUES (?,?)");
-			
-				ResultSet relation = stmt3.executeQuery("SELECT d_id FROM degrees WHERE gpa ='"
-						+ d_array.get(i).getGPA() + "'");
-				relation.next() ;
-				
-				ResultSet person = stmt4.executeQuery("SELECT p_id FROM degrees WHERE first_name ='"
-						+ session.getAttribute("first") + "'");
-				
-				person.next() ;
-				
-				pstmt.setInt(1,relation.getInt(1)) ;
-				pstmt.setInt(2,person.getInt(1)) ;
-				pstmt.executeUpdate();
-				
-				
-			}
-
-
-			
-
-		} catch (SQLException e) {
+			// Close the Connection
+			conn.close();
+		} 
+		catch (SQLException e) 
+		{
+			// Wrap the SQL exception in a runtime exception to propagate it upwards
 			throw new RuntimeException(e);
-		} finally {
-			if (rs != null) {
-				try {
+		} 
+		finally 
+		{
+			// Release resources in a finally block in reverse-order of
+			// their creation
+			if (rs != null) 
+			{
+				try 
+				{
 					rs.close();
-				} catch (SQLException e) {
-				}
+				} 
+				catch (SQLException e) {} // Ignore
 				rs = null;
 			}
-			if (pstmt != null) {
+			if (pstmt != null) 
+			{
 				try {
 					pstmt.close();
-				} catch (SQLException e) {
-				}
+				} 
+				catch (SQLException e) {} // Ignore
 				pstmt = null;
 			}
-			if (conn != null) {
+			if (conn != null) 
+			{
 				try {
 					conn.close();
-				} catch (SQLException e) {
-				}
+				} 
+				catch (SQLException e) {} // Ignore
 				conn = null;
 			}
-
 		}
 	%>
-
-	<%
-		// Catch exception
-	%>
-
-
-
-	Your application has been sent.
+	Your application has been successfully sent. Your application ID is <%=p_id %>.
 </body>
 </html>
