@@ -218,7 +218,7 @@
     		rs.next();
     		p_id =  rs.getInt("p_id"); 
     		         
-            pstmt = conn.prepareStatement("INSERT INTO has_degree (personal, degree) VALUES (?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO has_degree (personal_id, degree) VALUES (?, ?)");
             for(int i = 0; i < d_id.size(); i++)
             {
             	pstmt.setInt(1, p_id);

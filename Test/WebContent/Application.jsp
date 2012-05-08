@@ -137,7 +137,7 @@
 				out.println("<br>Degrees of the Applicant: <br>");
 				// print out the degree information of applicant
 				rs_pid = stmt2
-						.executeQuery("SELECT degree FROM has_degree where personal ='"
+						.executeQuery("SELECT degree FROM has_degree where personal_id ='"
 								+ rs.getString(1) + "'");
 				while (rs_pid.next()) {
 					rs_degree = stmt1
@@ -182,11 +182,16 @@
 			rs_param_1 = stmt5
 					.executeQuery("SELECT d_id FROM degrees where major = '"
 							+ rs_param.getInt(1) + "'");
+			ArrayList temp = new ArrayList() ; // this arraylist is for preventing depulicated id to print out again 
 			while (rs_param_1.next()) {
+				
+				//	out.println("ADDED " + rs_param_1.getInt(1) + "<br>") ;
 				rs_param_2 = stmt6
-						.executeQuery("SELECT personal FROM has_degree where degree = '"
+						.executeQuery("SELECT personal_id FROM has_degree where degree = '"
 								+ rs_param_1.getInt(1) + "'");
 				rs_param_2.next() ;
+				if ( temp.contains(rs_param_2.getInt(1) )== false ) {
+					temp.add(rs_param_2.getInt(1)) ;
 					rs = stmt
 							.executeQuery("SELECT * FROM personal_info where p_id = '"
 									+ rs_param_2.getInt(1) + "'");
@@ -263,7 +268,7 @@
 						out.println("<br>Degrees of the Applicant: <br>");
 
 						rs_pid = stmt2
-								.executeQuery("SELECT degree FROM has_degree where personal ='"
+								.executeQuery("SELECT degree FROM has_degree where personal_id ='"
 										+ rs.getString(1) + "'");
 
 						while (rs_pid.next()) {
@@ -303,7 +308,7 @@
 						}
 						out.println("<br>");
 					}
-				
+				}
 			}
 		}
 	// close the result set and pstmt 
