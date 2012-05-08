@@ -16,7 +16,7 @@
 
 <FORM METHOD=GET ACTION="application.jsp">
 <%
-	// Connect to the postgreSQL             
+	// Connect to the postgreSQL and set up the result set 
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
@@ -40,7 +40,7 @@
 		conn = DriverManager
 				.getConnection("jdbc:postgresql://localhost:5432/Applicant?"
 						+ "user=postgres&password=1234");
-		// Create the support to get the Vector of the specializations 
+		
 		Statement stmt = conn.createStatement();
 		Statement stmt1 = conn.createStatement();
 		Statement stmt2 = conn.createStatement();
@@ -48,7 +48,7 @@
 		Statement stmt4 = conn.createStatement();
 		Statement stmt5 = conn.createStatement();
 		Statement stmt6 = conn.createStatement();
-
+		// if spec and major is null, it means we access the application directly and it suppose to show the hyperlink of the name
 		if (spec == null && major == null) {
 			rs = stmt.executeQuery("SELECT* FROM personal_info");
 			String FullName = "";
@@ -60,17 +60,18 @@
 <br>
 <%
 	}
-		} else if (spec != null && major == null) {
-
+		} else if (spec != null && major == null) { // the access from specialization analytics
+			// get the s_id from specialization 
 			rs_param = stmt4
 					.executeQuery("SELECT s_id FROM specializations where specialization = '"
 							+ spec + "'");
-
+			
 			rs_param.next();
+			// get all the stuff from personal_info using the spec 
 			rs = stmt
 					.executeQuery("SELECT* FROM personal_info where spec = '"
 							+ rs_param.getInt(1) + "'");
-
+			// print out the applicant information
 			while (rs.next()) {
 
 				out.println("Name of the Applicant: ");
@@ -89,7 +90,7 @@
 							+ rs_countries.getString(1) + " ");
 				}
 				out.println("<br>");
-
+				// print out the residence and citizenship 
 				rs_countries = stmt1
 						.executeQuery("SELECT country FROM countries where c_id ='"
 								+ rs.getInt(6) + "'");
@@ -134,7 +135,7 @@
 				}
 
 				out.println("<br>Degrees of the Applicant: <br>");
-
+				// print out the degree information of applicant
 				rs_pid = stmt2
 						.executeQuery("SELECT degree FROM has_degree where personal ='"
 								+ rs.getString(1) + "'");
@@ -170,12 +171,14 @@
 				}
 				out.println("<br>");
 			} // for while ( rs.next() )
-		} else { // spec == null and major is not null
+		} else { // spec == null and major is not null it means accessing application from Discipline Analytics 
+			// get the major id from major 
 			rs_param = stmt4
 					.executeQuery("SELECT m_id FROM majors where major = '"
 							+ major + "'");
 
 			rs_param.next();
+			// get the degree id from the major table and find it may have many degree having same major 
 			rs_param_1 = stmt5
 					.executeQuery("SELECT d_id FROM degrees where major = '"
 							+ rs_param.getInt(1) + "'");
@@ -187,7 +190,7 @@
 					rs = stmt
 							.executeQuery("SELECT * FROM personal_info where p_id = '"
 									+ rs_param_2.getInt(1) + "'");
-
+					// print out the personal information 
 					while (rs.next()) {
 
 						out.println("Name of the Applicant: ");
@@ -198,6 +201,8 @@
 						out.println("<br>");
 						out.println("MI: " + rs.getString(4));
 						out.println("<br>");
+						
+						// print out the residence and citizenship 
 						rs_countries = stmt1
 								.executeQuery("SELECT country FROM countries where c_id ='"
 										+ rs.getInt(5) + "'");
@@ -254,7 +259,7 @@
 							}
 
 						}
-
+						// print out the degree information of applicant
 						out.println("<br>Degrees of the Applicant: <br>");
 
 						rs_pid = stmt2
@@ -301,8 +306,8 @@
 				
 			}
 		}
-
-	} catch (SQLException e) {
+	// close the result set and pstmt 
+	} catch (SQLException e) { 
 		throw new RuntimeException(e);
 	} finally {
 		if (rs != null) {
