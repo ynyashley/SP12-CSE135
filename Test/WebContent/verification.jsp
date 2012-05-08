@@ -15,17 +15,11 @@ the submit button to submit the application or cancel it(go back to Name.jsp)-->
 		session.setAttribute("specialization", specialization);
 	%>
 
-	First Name:
-	<%=session.getAttribute("first")%>
-	</br> Middle Initial:
-	<%=session.getAttribute("middle")%>
-	</br> Last Name:
-	<%=session.getAttribute("last")%>
-	</br> Citizenship:
-	<%=session.getAttribute("citizenship")%>
-	</br> Country of Residence:
-	<%=session.getAttribute("residence")%>
-	</br>
+	First Name: <%=session.getAttribute("first")%> </br> 
+	Middle Initial: <%=session.getAttribute("middle")%> </br> 
+	Last Name: <%=session.getAttribute("last")%> </br> 
+	Citizenship: <%=session.getAttribute("citizenship")%> </br> 
+	Country of Residence: <%=session.getAttribute("residence")%> </br>
 	<%
 		String counter = (String) session.getAttribute("counter");
 	%>
@@ -38,24 +32,18 @@ the submit button to submit the application or cancel it(go back to Name.jsp)-->
 		String state = (String) a.getState();
 		String ctc = (String) a.getTel();
 	%>
-	Address:
-	<%=add%></br> City:
-	<%=city%></br> Zip:
-	<%=zip%>
-	</br> Area Code:
-	<%=area%>
-	</br>
+	Address: <%=add%> </br> 
+	City: <%=city%> </br> 
+	Zip: <%=zip%> </br> 
+	Area Code: <%=area%> </br>
 	<%
 		if (!Residence_test.equals("United States")) {
 	%>
-	Country Telephone Code:
-	<%=ctc%>
-	</br>
+			Country Telephone Code: <%=ctc%> </br>
 	<%
 		} else {
 	%>
-	State:
-	<%=state%>
+			State: <%=state%>
 	<%
 		}
 	%>
@@ -67,22 +55,18 @@ the submit button to submit the application or cancel it(go back to Name.jsp)-->
 		String title = (String) d.getTitle();
 	%>
 	<%
-		if (c_ship.equals("United States")
-				|| Residence_test.equals("United States")) {
+		if (c_ship.equals("United States") || Residence_test.equals("United States")) {
 	%>
-	Identity of the Applicant: Domestic Applicant
-	<br>
+			Identity of the Applicant: Domestic Applicant <br>
 	<%
 		} else {
 	%>
-	Identity of the Applicant: International Applicant
-	<br>
+			Identity of the Applicant: International Applicant <br>
 	<%
 		}
 	%>
 	<%
-		ArrayList<Degree> d_array = (ArrayList<Degree>) session
-				.getAttribute("degreeArray");
+		ArrayList<Degree> d_array = (ArrayList<Degree>) session.getAttribute("degreeArray");
 		int count_t = Integer.parseInt(counter);
 		String StringCount, l, u, t, m, G, y, mo;
 		if (count_t > 0) {
@@ -96,35 +80,22 @@ the submit button to submit the application or cancel it(go back to Name.jsp)-->
 				mo = d_array.get(i).getMonth();
 				y = d_array.get(i).getYear();
 	%>
-	University
-	<%=StringCount%>
-	in
-	<%=l%>
-	<br> Name of University
-	<%=StringCount%>:
-	<%=u%>
-	<br> Major
-	<%=StringCount%>:
-	<%=m%><br> Title
-	<%=StringCount%>:
-	<%=t%><br> GPA/Expected GPA
-	<%=StringCount%>:
-	<%=G%>
-	<br> Month/Year
-	<%=StringCount%>:
-	<%=mo%>/<%=y%>
-	<br>
+	University <%=StringCount%> in <%=l%>
+	<br> Name of University <%=StringCount%>: <%=u%> <br> 
+	Major <%=StringCount%>: <%=m%> <br> 
+	Title <%=StringCount%>: <%=t%> <br> 
+	GPA/Expected GPA <%=StringCount%>: <%=G%> <br> 
+	Month/Year <%=StringCount%>: <%=mo%>/<%=y%> <br>
 	<br>
 	<%
 		}
-		}
-		String appID = "0";
-		session.setAttribute("appID", appID);
+	}
+	String appID = "0";
+	session.setAttribute("appID", appID);
 	%>
-	Specialization:
-	<%=specialization%>
+	Specialization: <%=specialization%> <br>
 	<br>
-	<br>
+	<!-- Creates "Submit Application" button and "Cancel" button -->
 	<form action="Confirmation.jsp" method="POST">
 		<input type="submit" name="action" value="Submit Application" />
 	</form>
