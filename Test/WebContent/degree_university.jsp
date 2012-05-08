@@ -35,6 +35,7 @@ if (!(Residence_test.equals("United States")) ){ %>
 else{ %>
 	State: <%=state %>
 <%} %>
+</br>
 <% 
 /*
  * The applicant is considered as a domestic applicant if he/she either

@@ -1,13 +1,11 @@
 <%@page import="support.*,java.util.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Verification</title>
 </head>
 <body>
-	<!-- This page is printing out all the information form the applicant and provide 
-the submit button to submit the application or cancel it(go back to Name.jsp)-->
+	<!-- This page is printing out all the information from the applicant and provide 
+		 the submit button to submit the application or cancel it(go back to Name.jsp)-->
 	<%
 		String specialization = request.getParameter("specialization");
 		String Residence_test = (String) session.getAttribute("residence");
@@ -95,6 +93,7 @@ the submit button to submit the application or cancel it(go back to Name.jsp)-->
 	%>
 	Specialization: <%=specialization%> <br>
 	<br>
+	
 	<!-- Creates "Submit Application" button and "Cancel" button -->
 	<form action="Confirmation.jsp" method="POST">
 		<input type="submit" name="action" value="Submit Application" />
