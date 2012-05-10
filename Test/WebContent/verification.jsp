@@ -41,7 +41,7 @@
 	<%
 		} else {
 	%>
-			State: <%=state%>
+			State: <%=state%> </br>
 	<%
 		}
 	%>
