@@ -144,9 +144,49 @@ University <%=counter %> in <%=loc %>:
 If your university is not listed above, please enter it in the text box below:
 <form action="degree_major.jsp" method="POST">
 <input type="text" name="university" />
-<input type = "submit" name = "action" value = "submit" />
+<td><input type="button" value="Submit" onclick="showapp(<%=Integer.toString(1)%>)"/></td>
 </form>
-
-
+<script type="text/javascript">
+	function showapp(str) {
+		var xmlHttp;
+		alert(str);
+		xmlHttp = new XMLHttpRequest();
+		if (xmlHttp == null) {
+			alert("Your browser does not support AJAX!");
+			return;
+		}
+		var url = "university_xml.jsp";
+		url = url + "?id=" + str;
+		url = url + "&sid=" + Math.random();
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4) {
+				var xmlDoc = xmlHttp.responseXML.documentElement;
+				alert('ready');
+				alert(xmlDoc == null);
+				alert(xmlDoc.getElementsByTagName("message")[0].childNodes[0] == null);
+				document.getElementById("message").innerHTML= xmlDoc.getElementsByTagName("message")[0].childNodes[0].nodeValue;
+				alert("Done");
+			}
+		}
+		xmlHttp.open("GET", url, true);
+		xmlHttp.send();
+	}
+	function GetXmlHttpObject() {
+		var xmlHttp = null;
+		try {
+			// Firefox, Opera 8.0+, Safari
+			xmlHttp = new XMLHttpRequest();
+		} catch (e) {
+			// Internet Explorer
+			try {
+				xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		}
+		return xmlHttp;
+	}
+</script>
+<span id="message"></span><br>
 </body>
 </html>

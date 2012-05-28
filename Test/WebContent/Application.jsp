@@ -167,6 +167,7 @@
 				    + " onclick=\"showapp(" + Integer.toString(i) + ")\"/></td>");
 				out.println("<br>") ;
 				i++ ;
+			}
 			
 			%>
 			<div>
@@ -188,7 +189,7 @@
 			<span id ="uni"></span><br>
 			<span id = "title"></span>
 			</div>
-		<% }
+		<% 
 		} else if (spec != null && major == null) { // the access from specialization analytics
 			// get the s_id from specialization 
 			rs_param = stmt4

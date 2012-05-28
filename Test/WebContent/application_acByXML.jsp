@@ -45,9 +45,6 @@
 		}
 		xmlHttp.open("GET", url, true);
 		xmlHttp.send();
-		alert(clicked);
-		if(clicked == true)
-		hideapp(str);
 	}
 	function hideapp(str)
 	{
@@ -90,8 +87,8 @@
 				alert("Done");
 			}
 		}
-		xmlHttp.open("GET", url, true);
-		xmlHttp.send();
+		xmlHttp.open("GET", url, false);
+		xmlHttp.send(null);
 	}
 	
 	function GetXmlHttpObject() {
