@@ -141,36 +141,37 @@ University <%=counter %> in <%=loc %>:
   <% } %>
 
 </table>
-If your university is not listed above, please enter it in the text box below:
-<form action="degree_major.jsp" method="POST">
-<input type="text" name="university" />
-<td><input type="button" value="Submit" onclick="showapp(<%=Integer.toString(1)%>)"/></td>
-</form>
+If your university is not listed above, please enter it in the text box below: <br>
+<input type="text" name="university" id="university" onfocusout="detect()"/>
+<input type="button" value="submit" onclick="detect()"/>
 <script type="text/javascript">
+	function detect()
+	{
+		var uni = document.getElementById("university");
+		showapp(uni.value);
+	}
 	function showapp(str) {
 		var xmlHttp;
-		alert(str);
 		xmlHttp = new XMLHttpRequest();
 		if (xmlHttp == null) {
 			alert("Your browser does not support AJAX!");
 			return;
 		}
 		var url = "university_xml.jsp";
-		url = url + "?id=" + str;
+		url = url + "?uni=" + str;
 		url = url + "&sid=" + Math.random();
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
 				alert('ready');
-				alert(xmlDoc == null);
-				alert(xmlDoc.getElementsByTagName("message")[0].childNodes[0] == null);
-				document.getElementById("message").innerHTML= xmlDoc.getElementsByTagName("message")[0].childNodes[0].nodeValue;
+				document.getElementById("test").innerHTML= xmlDoc.getElementsByTagName("test")[0].childNodes[0].nodeValue;
 				alert("Done");
 			}
 		}
 		xmlHttp.open("GET", url, true);
 		xmlHttp.send();
 	}
+	
 	function GetXmlHttpObject() {
 		var xmlHttp = null;
 		try {
@@ -187,6 +188,15 @@ If your university is not listed above, please enter it in the text box below:
 		return xmlHttp;
 	}
 </script>
-<span id="message"></span><br>
+
+</head>
+
+<body>
+<table>
+
+</table>
+<br>
+
+<span id="test"></span>
 </body>
 </html>
