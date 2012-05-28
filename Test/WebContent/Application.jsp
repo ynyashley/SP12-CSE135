@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript">
-	function showapp(str) {
+	// str: applicant id, num: number of the degree for that particular applicant
+	function showapp(str, num) { 
 		var xmlHttp;
-		alert(str);
 		xmlHttp = new XMLHttpRequest();
 		if (xmlHttp == null) {
 			alert("Your browser does not support AJAX!");
@@ -14,17 +14,17 @@
 		var url = "application_xml.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
+		var count_degree = 0 ;
 		var ele = document.getElementById("displayPage"+str);
 		var button_show = document.getElementById("showbutton"+str);
 		var button_hide = document.getElementById("hidebutton"+str);
+		// set the visibality for the button and the div tag 
 		ele.style.display = "block" ;
 		button_show.style.display ="none" ;
 		button_hide.style.display ="block" ;
-	
 			xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
-				alert('ready');
 				document.getElementById("first"+str).innerHTML= xmlDoc.getElementsByTagName("first")[0].childNodes[0].nodeValue;
 				document.getElementById("last"+str).innerHTML= xmlDoc.getElementsByTagName("last")[0].childNodes[0].nodeValue;
 				document.getElementById("middle"+str).innerHTML= xmlDoc.getElementsByTagName("middle")[0].childNodes[0].nodeValue;
@@ -34,27 +34,31 @@
 				document.getElementById("street"+str).innerHTML= xmlDoc.getElementsByTagName("street")[0].childNodes[0].nodeValue;
 				document.getElementById("city"+str).innerHTML= xmlDoc.getElementsByTagName("city")[0].childNodes[0].nodeValue;
 				document.getElementById("zip"+str).innerHTML= xmlDoc.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
+				document.getElementById("area"+str).innerHTML= xmlDoc.getElementsByTagName("area")[0].childNodes[0].nodeValue;
+				
 				if(xmlDoc.getElementsByTagName("state")[0].childNodes[0] == null){
 					document.getElementById("tele"+str).innerHTML= xmlDoc.getElementsByTagName("tele")[0].childNodes[0].nodeValue;
 				}else{
 					document.getElementById("state"+str).innerHTML= xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue;
 				}
-				document.getElementById("major"+str).innerHTML= xmlDoc.getElementsByTagName("major")[0].childNodes[0].nodeValue;
-				document.getElementById("title"+str).innerHTML= xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
-				document.getElementById("uni"+str).innerHTML= xmlDoc.getElementsByTagName("uni")[0].childNodes[0].nodeValue;
-				document.getElementById("month"+str).innerHTML= xmlDoc.getElementsByTagName("month")[0].childNodes[0].nodeValue;
-				document.getElementById("year"+str).innerHTML= xmlDoc.getElementsByTagName("year")[0].childNodes[0].nodeValue;
+				for (count_degree = 0 ; count_degree < num ; count_degree++) {
+					document.getElementById("major"+str+count_degree).innerHTML= xmlDoc.getElementsByTagName("major"+count_degree)[0].childNodes[0].nodeValue;
+					document.getElementById("title"+str+count_degree).innerHTML= xmlDoc.getElementsByTagName("title"+count_degree)[0].childNodes[0].nodeValue;
+					document.getElementById("uni"+str+count_degree).innerHTML= xmlDoc.getElementsByTagName("uni"+count_degree)[0].childNodes[0].nodeValue;
+					document.getElementById("month"+str+count_degree).innerHTML= xmlDoc.getElementsByTagName("month"+count_degree)[0].childNodes[0].nodeValue;
+					document.getElementById("year"+str+count_degree).innerHTML= xmlDoc.getElementsByTagName("year"+count_degree)[0].childNodes[0].nodeValue;
+
+				}
 			}
-			
 		}
-		alert("DoneDone");
 		xmlHttp.open("GET", url, true);
 		xmlHttp.send();
 	}
-	function hideapp(str)
+	// str: applicant id, num: number of the degree for that particular applicant
+	function hideapp(str,num)
 	{
 		var xmlHttp;
-		alert(str);
+		//alert(str);
 		xmlHttp = new XMLHttpRequest();
 		if (xmlHttp == null) {
 			alert("Your browser does not support AJAX!");
@@ -66,13 +70,15 @@
 		var ele = document.getElementById("displayPage"+str);
 		var button_show = document.getElementById("showbutton"+str);
 		var button_hide = document.getElementById("hidebutton"+str);
+		// set the visibality for the button and the div tag 
 		button_show.style.display ="block" ;
 		button_hide.style.display ="none" ;
 		ele.style.display ="none" ;
+		var count_degree = 0 ;
 		xmlHttp.onreadystatechange = function() {
-			if (xmlHttp.readyState == 4) {
+			if (xmlHttp.readyState == 4) { 
+				// reset the content of the tag to ""
 				var xmlDoc = xmlHttp.responseXML.documentElement;
-				alert('ready');
 				document.getElementById("first"+str).innerHTML= "";
 				document.getElementById("last"+str).innerHTML= "";
 				document.getElementById("middle"+str).innerHTML= "";
@@ -82,6 +88,7 @@
 				document.getElementById("street"+str).innerHTML= "";
 				document.getElementById("city"+str).innerHTML= "";
 				document.getElementById("zip"+str).innerHTML= "";
+				document.getElementById("area"+str).innerHTML= "";
 				if(xmlDoc.getElementsByTagName("state")[0].childNodes[0] == null)
 				{
 					document.getElementById("tele"+str).innerHTML= "";
@@ -90,12 +97,15 @@
 				{
 					document.getElementById("state"+str).innerHTML= "";
 				}
-				document.getElementById("major"+str).innerHTML= "";
-				document.getElementById("title"+str).innerHTML= "";
-				document.getElementById("uni"+str).innerHTML= "";
-				document.getElementById("month"+str).innerHTML= "";
-				document.getElementById("year"+str).innerHTML= "";
-				alert("Done");
+				// reseting the multi degree tag to ""
+				for (count_degree = 0 ; count_degree < num ; count_degree++) {
+					document.getElementById("major"+str+count_degree).innerHTML= "";
+					document.getElementById("title"+str+count_degree).innerHTML= "";
+					document.getElementById("uni"+str+count_degree).innerHTML= "";
+					document.getElementById("month"+str+count_degree).innerHTML= "";
+					document.getElementById("year"+str+count_degree).innerHTML= "";
+
+				}
 			}
 		}
 		xmlHttp.open("GET", url, true);
@@ -172,25 +182,42 @@
 			String FullName = "";
 			out.println("Names of Applicants: <br>");
 			int i = 1 ;
+			int count = 0 ;
+			int num = 0 ;
 			while (rs.next()) {
 				FullName = rs.getString(2) + " " + rs.getString(3)
 						+ " " + rs.getString(4);
+				count = 0 ;
+				// count how many degree does the current applicant have.
+				rs_pid = stmt2
+				.executeQuery("SELECT degree FROM has_degree where personal_id ='"
+						+ rs.getString(1) + "'");
+				while (rs_pid.next()) {
+					count++ ;
+				}
 				%>
+				<!-- This are the show applicantion button and hide applicaton button
+					The default setting is displaying the show application button and hide
+					another one. When the user click show application, it will send the request to 
+					javaScript function and display all the information of the applicant. Then display the 
+					hide application button and hide show application button-->
 				<div id="showbutton<%=Integer.toString(i)%>"  style = "display: block">
 				<%out.print(FullName + " ") ; %><td><input type="button" value="Show Application"  
-				    onclick="showapp(<%=Integer.toString(i)%>)"/></td>
+				    onclick="showapp(<%=Integer.toString(i)%>,<%=Integer.toString(count)%> )"/></td>
 				</div>
 				
 				<div id="hidebutton<%=Integer.toString(i)%>"  style = "display: none">
 				<%out.print(FullName + " ") ; %><td><input type="button" value="Hide Application"  
-				    onclick="hideapp(<%=Integer.toString(i)%>)"/></td>
+				    onclick="hideapp(<%=Integer.toString(i)%>,<%=Integer.toString(count)%>)"/></td>
 				</div>
 				<% 
 				//out.println("<br>") ;
 				
-			
+				
 			
 			%>
+			<!--  this are html codes for creating mult div tags. 
+			The default setting for displaying is none which is not shown at the beginning  -->
 <div id="displayPage<%=i%>" style="display: none"> 
 			<span id="application<%=i%>"></span><br>
 			<span id="first<%=i%>"></span><br>
@@ -204,11 +231,21 @@
 			<span id="zip<%=i%>"></span><br>
 			<span id="state<%=i%>"></span>
 			<span id ="tele<%=i%>"></span><br>
-			<span id ="major<%=i%>"></span><br>
-			<span id ="year<%=i%>"></span><br>
-			<span id ="month<%=i%>"></span><br>
-			<span id ="uni<%=i%>"></span><br>
-			<span id = "title<%=i%>"></span>
+			<span id ="area<%=i%>"></span><br>
+			
+<%
+			num = 0 ; // reset 0 for every applicant
+			// Creating the multi degree since the applicant may have more than one degree
+			while ( num < count ) {
+%>
+			<span id ="uni<%=i%><%=num%>"></span><br>
+			<span id ="major<%=i%><%=num%>"></span><br>
+			<span id ="year<%=i%><%=num%>"></span><br>
+			<span id ="month<%=i%><%=num%>"></span><br>
+			<span id = "title<%=i%><%=num%>"></span><br>
+		<% num++ ;
+			} 
+		%>
 </div>
 		<% 	i++ ;
 			}

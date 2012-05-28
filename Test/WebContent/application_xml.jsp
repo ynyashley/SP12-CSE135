@@ -1,5 +1,6 @@
 <%@ page contentType="text/xml"%>
 <%@ page import="java.sql.*"%>
+<%@page import="support.*, java.util.*"  %>
 <%
 	response.setContentType("text/xml");
 	String p_id = request.getParameter("id");
@@ -17,12 +18,13 @@
 	String city = "";
 	String areaCode = "";
 	String tele = "";
-	String major = "";
-	String title = "";
-	String year = "";
-	String month = "";
-	String gpa = "";
-	String uni = "";
+	Vector<String> major = new Vector<String>() ;
+	Vector<String> title = new Vector<String>() ;
+	Vector<String> year = new Vector<String>() ;
+	Vector<String> month = new Vector<String>() ;
+	Vector<String> gpa = new Vector<String>() ;
+	Vector<String> uni = new Vector<String>() ;
+	int num = 0 ;
 %>
 <%
 	// Connect to the postgreSQL             
@@ -85,7 +87,7 @@
 				if (rs_address.getString(4) != null) {
 					state = rs_address.getString(4);
 				}
-				//areaCode  = rs_address.getString(5);
+				areaCode  = rs_address.getString(5);
 				city = rs_address.getString(6);
 				if (rs_address.getString(7) != null) {
 					tele = rs_address.getString(7);
@@ -104,18 +106,18 @@
 							.executeQuery("SELECT university FROM universities where u_id ='"
 									+ rs_degree.getInt(2) + "'");
 					while (rs_uni.next()) {
-						uni = rs_uni.getString(1);
+						uni.add(rs_uni.getString(1));
 					}
 					rs_mj = stmt3
 							.executeQuery("SELECT major FROM majors where m_id ='"
 									+ rs_degree.getInt(3) + "'");
 					while (rs_mj.next()) {
-						major = rs_mj.getString(1);
+						major.add(rs_mj.getString(1));
 					}
-					title = rs_degree.getString(4);
-					month = rs_degree.getString(5);
-					year = rs_degree.getString(6);
-					gpa = rs_degree.getString(7);
+					title.add(rs_degree.getString(4));
+					month.add(rs_degree.getString(5));
+					year.add(rs_degree.getString(6));
+					gpa.add(rs_degree.getString(7));
 				}
 			}
 		}
@@ -195,27 +197,31 @@
 
 	}
 %>
-
+<!-- displaying tag -->
 <application> 
-<first><%=first_name%></first> 
-<last><%=last_name%></last>
-<middle><%=middle_name%></middle> 
-<reside><%=Residence%></reside> 
-<citizen><%=Citizenship%></citizen>
-<spec><%=Specialization%></spec> 
-<street><%=street%></street> <city><%=city%></city>
-<zip><%=zip%></zip> 
+<first>First Name: <%=first_name%></first> 
+<last>Last Name: <%=last_name%></last>
+<middle>MI: <%=middle_name%></middle> 
+<reside>Residence: <%=Residence%></reside> 
+<citizen>Citizenship: <%=Citizenship%></citizen>
+<spec>Specialization: <%=Specialization%></spec> 
+<street>Street: <%=street%></street> <city><%=city%></city>
+<zip>Zip: <%=zip%></zip> 
+<area>Area Code: <%=areaCode%></area>
 <% if (state != null) {%> 
 <state><%=state%></state>
 <%}%> 
 <%if (tele != null) {%> 
 <tele><%=tele%></tele> 
 <%}%> 
-<major><%=major%></major> 
-<title><%=title%></title>
-<month><%=month%></month>
-<year><%=year%></year>
-<uni><%=uni%></uni>
-<gpa><%=gpa%></gpa>
+<%while (num < uni.size()) {%>
+<major<%=num%>>Major: <%=major.elementAt(num)%></major<%=num%>> 
+<title<%=num%>>Title: <%=title.elementAt(num)%></title<%=num%>>
+<month<%=num%>>Month: <%=month.elementAt(num)%></month<%=num%>>
+<year<%=num%>>Year : <%=year.elementAt(num)%></year<%=num%>>
+<uni<%=num%>>University : <%=uni.elementAt(num)%></uni<%=num%>>
+<gpa<%=num%>>GPA : <%=gpa.elementAt(num)%></gpa<%=num%>>
+<% num++ ;
+}%>
 </application>
 
