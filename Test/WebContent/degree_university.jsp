@@ -164,7 +164,15 @@ If your university is not listed above, please enter it in the text box below: <
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
 				alert('ready');
-				document.getElementById("test").innerHTML= xmlDoc.getElementsByTagName("test")[0].childNodes[0].nodeValue;
+				//alert(xmlDoc == null);
+				if(xmlDoc != null)
+				{
+					document.getElementById("test").innerHTML= xmlDoc.getElementsByTagName("test")[0].childNodes[0].nodeValue;
+				}
+				else
+				{
+					window.location = "degree_major.jsp?university=" + str;
+				}
 				alert("Done");
 			}
 		}

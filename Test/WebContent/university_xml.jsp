@@ -2,7 +2,7 @@
 <%@page import="support.*, java.util.*"  %>
 <% response.setContentType("text/xml");
 	String university = (String)request.getParameter("uni");
-	String message = "University does not exist";
+	//String message = null;
 	support s = new support();
    	String path2 = config.getServletContext().getRealPath("universities.txt");
    	Vector universities = s.getUniversities(path2);
@@ -14,14 +14,14 @@
     	for(int j = 0; j < u.size(); j++)
     	{
     		if(university.equals(u.get(j)))
-    		{
-    			message = "University is known. Please choose from the list above.";
-    		}
+    		{%>
+    			<application> 
+				<test>University already exists. Please choose from the list above.</test>
+				</application>
+    		<%}
     	}
    	}
 	
 %>
 
-<application> 
-<test><%=message%></test>
-</application>
+
