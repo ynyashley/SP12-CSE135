@@ -14,7 +14,12 @@
 		var url = "application_xml.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
-		xmlHttp.onreadystatechange = function() {
+		var ele_1 = document.getElementById("showbutton"+str);
+		var ele_2 = document.getElementById("hidebutton"+str);
+		ele_1.style.display ="none" ;
+		ele_2.style.display ="block" ;
+	
+			xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
 				alert('ready');
@@ -34,15 +39,17 @@
 				else
 				{
 					document.getElementById("state").innerHTML= xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue;
+					}
+					document.getElementById("major").innerHTML= xmlDoc.getElementsByTagName("major")[0].childNodes[0].nodeValue;
+					document.getElementById("title").innerHTML= xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+					document.getElementById("uni").innerHTML= xmlDoc.getElementsByTagName("uni")[0].childNodes[0].nodeValue;
+					document.getElementById("month").innerHTML= xmlDoc.getElementsByTagName("month")[0].childNodes[0].nodeValue;
+					document.getElementById("year").innerHTML= xmlDoc.getElementsByTagName("year")[0].childNodes[0].nodeValue;
+					alert("Done");
 				}
-				document.getElementById("major").innerHTML= xmlDoc.getElementsByTagName("major")[0].childNodes[0].nodeValue;
-				document.getElementById("title").innerHTML= xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
-				document.getElementById("uni").innerHTML= xmlDoc.getElementsByTagName("uni")[0].childNodes[0].nodeValue;
-				document.getElementById("month").innerHTML= xmlDoc.getElementsByTagName("month")[0].childNodes[0].nodeValue;
-				document.getElementById("year").innerHTML= xmlDoc.getElementsByTagName("year")[0].childNodes[0].nodeValue;
-				alert("Done");
 			}
-		}
+		//}
+			alert("DoneDone");
 		xmlHttp.open("GET", url, true);
 		xmlHttp.send();
 	}
@@ -58,6 +65,11 @@
 		var url = "blank.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
+		var ele = document.getElementById("displayPage");
+		var ele_1 = document.getElementById("showbutton"+str);
+		var ele_2 = document.getElementById("hidebutton"+str);
+		ele_1.style.display ="block" ;
+		ele_2.style.display ="none" ;
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
@@ -79,11 +91,11 @@
 				{
 					document.getElementById("state").innerHTML= "";
 				}
-				document.getElementById("major").innerHTML= xmlDoc.getElementsByTagName("major")[0].childNodes[0].nodeValue;
-				document.getElementById("title").innerHTML= xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
-				document.getElementById("uni").innerHTML= xmlDoc.getElementsByTagName("uni")[0].childNodes[0].nodeValue;
-				document.getElementById("month").innerHTML= xmlDoc.getElementsByTagName("month")[0].childNodes[0].nodeValue;
-				document.getElementById("year").innerHTML= xmlDoc.getElementsByTagName("year")[0].childNodes[0].nodeValue;
+				document.getElementById("major").innerHTML= "";
+				document.getElementById("title").innerHTML= "";
+				document.getElementById("uni").innerHTML= "";
+				document.getElementById("month").innerHTML= "";
+				document.getElementById("year").innerHTML= "";
 				alert("Done");
 			}
 		}
@@ -154,6 +166,7 @@
 		Statement stmt5 = conn.createStatement();
 		Statement stmt6 = conn.createStatement();
 		// if spec and major is null, it means we access the application directly and it suppose to show the hyperlink of the name
+		%> <% 
 		if (spec == null && major == null) {
 			rs = stmt.executeQuery("SELECT* FROM personal_info");
 			String FullName = "";
@@ -162,15 +175,29 @@
 			while (rs.next()) {
 				FullName = rs.getString(2) + " " + rs.getString(3)
 						+ " " + rs.getString(4);
-				out.println(FullName) ;
-				out.println("<td>"+"<input type=\"button\"" + " value=\"Show Application " + i + "\"" 
-				    + " onclick=\"showapp(" + Integer.toString(i) + ")\"/></td>");
-				out.println("<br>") ;
+				
+				//out.println("<td>"+"<input type=\"button\"" + " value=\"Show Application " + i + "\"" 
+				  //  + " onclick=\"showapp(" + Integer.toString(i) + ")\"/></td>");
+				//out.println("<td>"+"<input type=\"button\"" + " value=\"Hide Application " + i + "\"" 
+					//    + " onclick=\"hideapp(" + Integer.toString(i) + ")\"/></td>");
+				%>
+				<div id="showbutton<%=Integer.toString(i)%>"  style = "display: block">
+				<%out.print(FullName + " ") ; %><td><input type="button" value="Show Application"  
+				    onclick="showapp(<%=Integer.toString(i)%>)"/></td>
+				</div>
+				
+				<div id="hidebutton<%=Integer.toString(i)%>"  style = "display: none">
+				<%out.print(FullName + " ") ; %><td><input type="button" value="Hide Application"  
+				    onclick="hideapp(<%=Integer.toString(i)%>)"/></td>
+				</div>
+				<% 
+				//out.println("<br>") ;
+				
 				i++ ;
 			}
 			
 			%>
-			<div>
+<div id="displayPage"<%=i %> style="display: block"> 
 			<span id="application"></span><br>
 			<span id="first"></span><br>
 			<span id="last"></span><br>
@@ -188,7 +215,7 @@
 			<span id ="month"></span><br>
 			<span id ="uni"></span><br>
 			<span id = "title"></span>
-			</div>
+</div>
 		<% 
 		} else if (spec != null && major == null) { // the access from specialization analytics
 			// get the s_id from specialization 

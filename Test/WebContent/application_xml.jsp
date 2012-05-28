@@ -93,7 +93,7 @@
 
 			}
 			rs_pid = stmt2
-					.executeQuery("SELECT degree FROM has_degree where personal ='"
+					.executeQuery("SELECT degree FROM has_degree where personal_id ='"
 							+ rs.getString(1) + "'");
 			while (rs_pid.next()) {
 				rs_degree = stmt1
