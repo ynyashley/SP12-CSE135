@@ -14,42 +14,40 @@
 		var url = "application_xml.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
-		var ele_1 = document.getElementById("showbutton"+str);
-		var ele_2 = document.getElementById("hidebutton"+str);
-		ele_1.style.display ="none" ;
-		ele_2.style.display ="block" ;
+		var ele = document.getElementById("displayPage"+str);
+		var button_show = document.getElementById("showbutton"+str);
+		var button_hide = document.getElementById("hidebutton"+str);
+		ele.style.display = "block" ;
+		button_show.style.display ="none" ;
+		button_hide.style.display ="block" ;
 	
 			xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
 				alert('ready');
-				document.getElementById("first").innerHTML= xmlDoc.getElementsByTagName("first")[0].childNodes[0].nodeValue;
-				document.getElementById("last").innerHTML= xmlDoc.getElementsByTagName("last")[0].childNodes[0].nodeValue;
-				document.getElementById("middle").innerHTML= xmlDoc.getElementsByTagName("middle")[0].childNodes[0].nodeValue;
-				document.getElementById("reside").innerHTML= xmlDoc.getElementsByTagName("reside")[0].childNodes[0].nodeValue;
-				document.getElementById("citizen").innerHTML= xmlDoc.getElementsByTagName("citizen")[0].childNodes[0].nodeValue;
-				document.getElementById("spec").innerHTML= xmlDoc.getElementsByTagName("spec")[0].childNodes[0].nodeValue;
-				document.getElementById("street").innerHTML= xmlDoc.getElementsByTagName("street")[0].childNodes[0].nodeValue;
-				document.getElementById("city").innerHTML= xmlDoc.getElementsByTagName("city")[0].childNodes[0].nodeValue;
-				document.getElementById("zip").innerHTML= xmlDoc.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
-				if(xmlDoc.getElementsByTagName("state")[0].childNodes[0] == null)
-				{
-					document.getElementById("tele").innerHTML= xmlDoc.getElementsByTagName("tele")[0].childNodes[0].nodeValue;
+				document.getElementById("first"+str).innerHTML= xmlDoc.getElementsByTagName("first")[0].childNodes[0].nodeValue;
+				document.getElementById("last"+str).innerHTML= xmlDoc.getElementsByTagName("last")[0].childNodes[0].nodeValue;
+				document.getElementById("middle"+str).innerHTML= xmlDoc.getElementsByTagName("middle")[0].childNodes[0].nodeValue;
+				document.getElementById("reside"+str).innerHTML= xmlDoc.getElementsByTagName("reside")[0].childNodes[0].nodeValue;
+				document.getElementById("citizen"+str).innerHTML= xmlDoc.getElementsByTagName("citizen")[0].childNodes[0].nodeValue;
+				document.getElementById("spec"+str).innerHTML= xmlDoc.getElementsByTagName("spec")[0].childNodes[0].nodeValue;
+				document.getElementById("street"+str).innerHTML= xmlDoc.getElementsByTagName("street")[0].childNodes[0].nodeValue;
+				document.getElementById("city"+str).innerHTML= xmlDoc.getElementsByTagName("city")[0].childNodes[0].nodeValue;
+				document.getElementById("zip"+str).innerHTML= xmlDoc.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
+				if(xmlDoc.getElementsByTagName("state")[0].childNodes[0] == null){
+					document.getElementById("tele"+str).innerHTML= xmlDoc.getElementsByTagName("tele")[0].childNodes[0].nodeValue;
+				}else{
+					document.getElementById("state"+str).innerHTML= xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue;
 				}
-				else
-				{
-					document.getElementById("state").innerHTML= xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue;
-					}
-					document.getElementById("major").innerHTML= xmlDoc.getElementsByTagName("major")[0].childNodes[0].nodeValue;
-					document.getElementById("title").innerHTML= xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
-					document.getElementById("uni").innerHTML= xmlDoc.getElementsByTagName("uni")[0].childNodes[0].nodeValue;
-					document.getElementById("month").innerHTML= xmlDoc.getElementsByTagName("month")[0].childNodes[0].nodeValue;
-					document.getElementById("year").innerHTML= xmlDoc.getElementsByTagName("year")[0].childNodes[0].nodeValue;
-					alert("Done");
-				}
+				document.getElementById("major"+str).innerHTML= xmlDoc.getElementsByTagName("major")[0].childNodes[0].nodeValue;
+				document.getElementById("title"+str).innerHTML= xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+				document.getElementById("uni"+str).innerHTML= xmlDoc.getElementsByTagName("uni")[0].childNodes[0].nodeValue;
+				document.getElementById("month"+str).innerHTML= xmlDoc.getElementsByTagName("month")[0].childNodes[0].nodeValue;
+				document.getElementById("year"+str).innerHTML= xmlDoc.getElementsByTagName("year")[0].childNodes[0].nodeValue;
 			}
-		//}
-			alert("DoneDone");
+			
+		}
+		alert("DoneDone");
 		xmlHttp.open("GET", url, true);
 		xmlHttp.send();
 	}
@@ -65,42 +63,44 @@
 		var url = "blank.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
-		var ele = document.getElementById("displayPage");
-		var ele_1 = document.getElementById("showbutton"+str);
-		var ele_2 = document.getElementById("hidebutton"+str);
-		ele_1.style.display ="block" ;
-		ele_2.style.display ="none" ;
+		var ele = document.getElementById("displayPage"+str);
+		var button_show = document.getElementById("showbutton"+str);
+		var button_hide = document.getElementById("hidebutton"+str);
+		button_show.style.display ="block" ;
+		button_hide.style.display ="none" ;
+		ele.style.display ="none" ;
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
 				alert('ready');
-				document.getElementById("first").innerHTML= "";
-				document.getElementById("last").innerHTML= "";
-				document.getElementById("middle").innerHTML= "";
-				document.getElementById("reside").innerHTML= "";
-				document.getElementById("citizen").innerHTML= "";
-				document.getElementById("spec").innerHTML= "";
-				document.getElementById("street").innerHTML= "";
-				document.getElementById("city").innerHTML= "";
-				document.getElementById("zip").innerHTML= "";
+				document.getElementById("first"+str).innerHTML= "";
+				document.getElementById("last"+str).innerHTML= "";
+				document.getElementById("middle"+str).innerHTML= "";
+				document.getElementById("reside"+str).innerHTML= "";
+				document.getElementById("citizen"+str).innerHTML= "";
+				document.getElementById("spec"+str).innerHTML= "";
+				document.getElementById("street"+str).innerHTML= "";
+				document.getElementById("city"+str).innerHTML= "";
+				document.getElementById("zip"+str).innerHTML= "";
 				if(xmlDoc.getElementsByTagName("state")[0].childNodes[0] == null)
 				{
-					document.getElementById("tele").innerHTML= "";
+					document.getElementById("tele"+str).innerHTML= "";
 				}
 				else
 				{
-					document.getElementById("state").innerHTML= "";
+					document.getElementById("state"+str).innerHTML= "";
 				}
-				document.getElementById("major").innerHTML= "";
-				document.getElementById("title").innerHTML= "";
-				document.getElementById("uni").innerHTML= "";
-				document.getElementById("month").innerHTML= "";
-				document.getElementById("year").innerHTML= "";
+				document.getElementById("major"+str).innerHTML= "";
+				document.getElementById("title"+str).innerHTML= "";
+				document.getElementById("uni"+str).innerHTML= "";
+				document.getElementById("month"+str).innerHTML= "";
+				document.getElementById("year"+str).innerHTML= "";
 				alert("Done");
 			}
 		}
 		xmlHttp.open("GET", url, true);
 		xmlHttp.send();
+		
 	}
 	
 	function GetXmlHttpObject() {
@@ -175,11 +175,6 @@
 			while (rs.next()) {
 				FullName = rs.getString(2) + " " + rs.getString(3)
 						+ " " + rs.getString(4);
-				
-				//out.println("<td>"+"<input type=\"button\"" + " value=\"Show Application " + i + "\"" 
-				  //  + " onclick=\"showapp(" + Integer.toString(i) + ")\"/></td>");
-				//out.println("<td>"+"<input type=\"button\"" + " value=\"Hide Application " + i + "\"" 
-					//    + " onclick=\"hideapp(" + Integer.toString(i) + ")\"/></td>");
 				%>
 				<div id="showbutton<%=Integer.toString(i)%>"  style = "display: block">
 				<%out.print(FullName + " ") ; %><td><input type="button" value="Show Application"  
@@ -193,30 +188,30 @@
 				<% 
 				//out.println("<br>") ;
 				
-				i++ ;
-			}
+			
 			
 			%>
-<div id="displayPage"<%=i %> style="display: block"> 
-			<span id="application"></span><br>
-			<span id="first"></span><br>
-			<span id="last"></span><br>
-			<span id="middle"></span><br>
-			<span id="reside"></span><br>
-			<span id="citizen"></span><br>
-			<span id="spec"></span><br>
-			<span id="street"></span><br>
-			<span id="city"></span><br>
-			<span id="zip"></span><br>
-			<span id="state"></span>
-			<span id ="tele"></span><br>
-			<span id ="major"></span><br>
-			<span id ="year"></span><br>
-			<span id ="month"></span><br>
-			<span id ="uni"></span><br>
-			<span id = "title"></span>
+<div id="displayPage<%=i%>" style="display: none"> 
+			<span id="application<%=i%>"></span><br>
+			<span id="first<%=i%>"></span><br>
+			<span id="last<%=i%>"></span><br>
+			<span id="middle<%=i%>"></span><br>
+			<span id="reside<%=i%>"></span><br>
+			<span id="citizen<%=i%>"></span><br>
+			<span id="spec<%=i%>"></span><br>
+			<span id="street<%=i%>"></span><br>
+			<span id="city<%=i%>"></span><br>
+			<span id="zip<%=i%>"></span><br>
+			<span id="state<%=i%>"></span>
+			<span id ="tele<%=i%>"></span><br>
+			<span id ="major<%=i%>"></span><br>
+			<span id ="year<%=i%>"></span><br>
+			<span id ="month<%=i%>"></span><br>
+			<span id ="uni<%=i%>"></span><br>
+			<span id = "title<%=i%>"></span>
 </div>
-		<% 
+		<% 	i++ ;
+			}
 		} else if (spec != null && major == null) { // the access from specialization analytics
 			// get the s_id from specialization 
 			rs_param = stmt4
