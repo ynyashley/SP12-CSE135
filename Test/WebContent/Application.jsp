@@ -11,8 +11,8 @@
 			alert("Your browser does not support AJAX!");
 			return;
 		}
-		alert(num) ;
-		alert(str) ;
+		//alert(num) ;
+		//alert(str) ;
 		var url = "application_xml.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
@@ -38,7 +38,6 @@
 				document.getElementById("zip"+str).innerHTML= xmlDoc.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
 				document.getElementById("area"+str).innerHTML= xmlDoc.getElementsByTagName("area")[0].childNodes[0].nodeValue;
 				
-				alert(xmlDoc.getElementsByTagName("state")[0] == null);
 				if(xmlDoc.getElementsByTagName("state")[0] == null){
 					document.getElementById("tele"+str).innerHTML= xmlDoc.getElementsByTagName("tele")[0].childNodes[0].nodeValue;
 				}else{
