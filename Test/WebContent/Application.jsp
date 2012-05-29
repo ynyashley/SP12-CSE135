@@ -11,6 +11,8 @@
 			alert("Your browser does not support AJAX!");
 			return;
 		}
+		alert(num) ;
+		alert(str) ;
 		var url = "application_xml.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
@@ -36,7 +38,8 @@
 				document.getElementById("zip"+str).innerHTML= xmlDoc.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
 				document.getElementById("area"+str).innerHTML= xmlDoc.getElementsByTagName("area")[0].childNodes[0].nodeValue;
 				
-				if(xmlDoc.getElementsByTagName("state")[0].childNodes[0] == null){
+				alert(xmlDoc.getElementsByTagName("state")[0] == null);
+				if(xmlDoc.getElementsByTagName("state")[0] == null){
 					document.getElementById("tele"+str).innerHTML= xmlDoc.getElementsByTagName("tele")[0].childNodes[0].nodeValue;
 				}else{
 					document.getElementById("state"+str).innerHTML= xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue;
@@ -190,7 +193,7 @@
 				count = 0 ;
 				// count how many degree does the current applicant have.
 				rs_pid = stmt2
-				.executeQuery("SELECT degree FROM has_degree where personal_id ='"
+				.executeQuery("SELECT degree FROM has_degree where personal ='"
 						+ rs.getString(1) + "'");
 				while (rs_pid.next()) {
 					count++ ;
@@ -201,14 +204,14 @@
 					another one. When the user click show application, it will send the request to 
 					javaScript function and display all the information of the applicant. Then display the 
 					hide application button and hide show application button-->
-				<div id="showbutton<%=Integer.toString(i)%>"  style = "display: block">
+				<div id="showbutton<%=Integer.toString(rs.getInt(1))%>"  style = "display: block">
 				<%out.print(FullName + " ") ; %><td><input type="button" value="Show Application"  
-				    onclick="showapp(<%=Integer.toString(i)%>,<%=Integer.toString(count)%> )"/></td>
+				    onclick="showapp(<%=Integer.toString(rs.getInt(1))%>,<%=Integer.toString(count)%> )"/></td>
 				</div>
 				
-				<div id="hidebutton<%=Integer.toString(i)%>"  style = "display: none">
+				<div id="hidebutton<%=Integer.toString(rs.getInt(1))%>"  style = "display: none">
 				<%out.print(FullName + " ") ; %><td><input type="button" value="Hide Application"  
-				    onclick="hideapp(<%=Integer.toString(i)%>,<%=Integer.toString(count)%>)"/></td>
+				    onclick="hideapp(<%=Integer.toString(rs.getInt(1))%>,<%=Integer.toString(count)%>)"/></td>
 				</div>
 				<% 
 				//out.println("<br>") ;
@@ -218,32 +221,32 @@
 			%>
 			<!--  this are html codes for creating mult div tags. 
 			The default setting for displaying is none which is not shown at the beginning  -->
-<div id="displayPage<%=i%>" style="display: none"> 
-			<span id="application<%=i%>"></span><br>
-			<span id="first<%=i%>"></span><br>
-			<span id="last<%=i%>"></span><br>
-			<span id="middle<%=i%>"></span><br>
-			<span id="reside<%=i%>"></span><br>
-			<span id="citizen<%=i%>"></span><br>
-			<span id="spec<%=i%>"></span><br>
-			<span id="street<%=i%>"></span><br>
-			<span id="city<%=i%>"></span><br>
-			<span id="zip<%=i%>"></span><br>
-			<span id="state<%=i%>"></span>
-			<span id ="tele<%=i%>"></span><br>
-			<span id ="area<%=i%>"></span><br>
+<div id="displayPage<%=rs.getInt(1)%>" style="display: none"> 
+			<span id="application<%=rs.getInt(1)%>"></span><br>
+			<span id="first<%=rs.getInt(1)%>"></span><br>
+			<span id="last<%=rs.getInt(1)%>"></span><br>
+			<span id="middle<%=rs.getInt(1)%>"></span><br>
+			<span id="reside<%=rs.getInt(1)%>"></span><br>
+			<span id="citizen<%=rs.getInt(1)%>"></span><br>
+			<span id="spec<%=rs.getInt(1)%>"></span><br>
+			<span id="street<%=rs.getInt(1)%>"></span><br>
+			<span id="city<%=rs.getInt(1)%>"></span><br>
+			<span id="zip<%=rs.getInt(1)%>"></span><br>
+			<span id="state<%=rs.getInt(1)%>"></span>
+			<span id ="tele<%=rs.getInt(1)%>"></span><br>
+			<span id ="area<%=rs.getInt(1)%>"></span><br>
 			
 <%
 			num = 0 ; // reset 0 for every applicant
 			// Creating the multi degree since the applicant may have more than one degree
 			while ( num < count ) {
 %>
-			<span id ="uni<%=i%><%=num%>"></span><br>
-			<span id ="major<%=i%><%=num%>"></span><br>
-			<span id ="year<%=i%><%=num%>"></span><br>
-			<span id ="month<%=i%><%=num%>"></span><br>
-			<span id = "title<%=i%><%=num%>"></span><br>
-		<% num++ ;
+			<span id ="uni<%=rs.getInt(1)%><%=num%>"></span><br>
+			<span id ="major<%=rs.getInt(1)%><%=num%>"></span><br>
+			<span id ="year<%=rs.getInt(1)%><%=num%>"></span><br>
+			<span id ="month<%=rs.getInt(1)%><%=num%>"></span><br>
+			<span id = "title<%=rs.getInt(1)%><%=num%>"></span><br>
+		<%    num++ ;
 			} 
 		%>
 </div>

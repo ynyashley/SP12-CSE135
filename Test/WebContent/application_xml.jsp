@@ -14,7 +14,7 @@
 	String street = "";
 	String zip = "";
 	String Specialization = "";
-	String state = "";
+	String state ="";
 	String city = "";
 	String areaCode = "";
 	String tele = "";
@@ -95,7 +95,7 @@
 
 			}
 			rs_pid = stmt2
-					.executeQuery("SELECT degree FROM has_degree where personal_id ='"
+					.executeQuery("SELECT degree FROM has_degree where personal ='"
 							+ rs.getString(1) + "'");
 			while (rs_pid.next()) {
 				rs_degree = stmt1
@@ -205,14 +205,15 @@
 <reside>Residence: <%=Residence%></reside> 
 <citizen>Citizenship: <%=Citizenship%></citizen>
 <spec>Specialization: <%=Specialization%></spec> 
-<street>Street: <%=street%></street> <city><%=city%></city>
+<street>Street: <%=street%></street> 
+<city>City: <%=city%></city>
 <zip>Zip: <%=zip%></zip> 
 <area>Area Code: <%=areaCode%></area>
-<% if (state != null) {%> 
-<state><%=state%></state>
+<% if (state.equals("")==false) {%> 
+<state>State: <%=state%></state>
 <%}%> 
-<%if (tele != null) {%> 
-<tele><%=tele%></tele> 
+<%if (tele.equals("")==false) {%> 
+<tele>Telephone Code: <%=tele%></tele> 
 <%}%> 
 <%while (num < uni.size()) {%>
 <major<%=num%>>Major: <%=major.elementAt(num)%></major<%=num%>> 
