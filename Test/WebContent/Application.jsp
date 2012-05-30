@@ -192,7 +192,7 @@
 				count = 0 ;
 				// count how many degree does the current applicant have.
 				rs_pid = stmt2
-				.executeQuery("SELECT degree FROM has_degree where personal ='"
+				.executeQuery("SELECT degree FROM has_degree where personal_id ='"
 						+ rs.getString(1) + "'");
 				while (rs_pid.next()) {
 					count++ ;

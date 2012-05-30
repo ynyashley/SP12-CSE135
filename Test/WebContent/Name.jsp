@@ -22,7 +22,7 @@
 			alert("Please enter your first name");
 			return false;
 		}
-		var iChars = "*|,\":<>[]{}`\';()@&$#%/+=-_~!^&?0123456789";
+		var iChars = "*|,\":<>[]{}`\';()@&$#%/+=-_~!^&?0123456789.";
 		for ( var i = 0; i < first.length; i++) {
 			if (iChars.indexOf(first.charAt(i)) != -1) {
 				alert("First name contains illegal characters!");

@@ -142,13 +142,16 @@ University <%=counter %> in <%=loc %>:
 
 </table>
 If your university is not listed above, please enter it in the text box below: <br>
-<input type="text" name="university" id="university" onfocusout="detect()"/>
+<input type="text" name="university" id="university" "/> <!--  "onfocusout="detect()"/> -->
 <input type="button" value="submit" onclick="detect()"/>
 <script type="text/javascript">
 	function detect()
 	{
 		var uni = document.getElementById("university");
-		showapp(uni.value);
+		if (uni != null && uni.value.length != 0){
+			showapp(uni.value);
+		}	
+		
 	}
 	function showapp(str) {
 		var xmlHttp;
@@ -157,13 +160,14 @@ If your university is not listed above, please enter it in the text box below: <
 			alert("Your browser does not support AJAX!");
 			return;
 		}
+		//document.getElementById("university").value
 		var url = "university_xml.jsp";
 		url = url + "?uni=" + str;
 		url = url + "&sid=" + Math.random();
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
-				alert('ready');
+				//alert('ready');
 				//alert(xmlDoc == null);
 				if(xmlDoc != null)
 				{
@@ -173,7 +177,7 @@ If your university is not listed above, please enter it in the text box below: <
 				{
 					window.location = "degree_major.jsp?university=" + str;
 				}
-				alert("Done");
+				//alert("Done");
 			}
 		}
 		xmlHttp.open("GET", url, true);

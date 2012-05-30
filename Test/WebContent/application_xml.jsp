@@ -95,7 +95,7 @@
 
 			}
 			rs_pid = stmt2
-					.executeQuery("SELECT degree FROM has_degree where personal ='"
+					.executeQuery("SELECT degree FROM has_degree where personal_id ='"
 							+ rs.getString(1) + "'");
 			while (rs_pid.next()) {
 				rs_degree = stmt1
@@ -206,7 +206,7 @@
 <citizen>Citizenship: <%=Citizenship%></citizen>
 <spec>Specialization: <%=Specialization%></spec> 
 <street>Street: <%=street%></street> 
-<city>City: <%=city%></city>
+<city>City: <%=city%></city> 
 <zip>Zip: <%=zip%></zip> 
 <area>Area Code: <%=areaCode%></area>
 <% if (state.equals("")==false) {%> 
