@@ -3,6 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript">
+	// this function is for showing the applicant's application by using Ajax, sending the request to the 
+	// server and display the hide application button.
 	// str: applicant id, num: number of the degree for that particular applicant
 	function showapp(str, num) { 
 		var xmlHttp;
@@ -11,8 +13,7 @@
 			alert("Your browser does not support AJAX!");
 			return;
 		}
-		//alert(num) ;
-		//alert(str) ;
+	
 		var url = "application_xml.jsp";
 		url = url + "?id=" + str;
 		url = url + "&sid=" + Math.random();
@@ -20,10 +21,9 @@
 		var ele = document.getElementById("displayPage"+str);
 		var button_show = document.getElementById("showbutton"+str);
 		var button_hide = document.getElementById("hidebutton"+str);
-		// set the visibality for the button and the div tag 
-		ele.style.display = "block" ;
-		button_show.style.display ="none" ;
-		button_hide.style.display ="block" ;
+		ele.style.display = "block" ; // make the displayPage to be viewed 
+		button_show.style.display ="none" ; // hide the show application button 
+		button_hide.style.display ="block" ; // make the hide application button to be viewed 
 			xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
@@ -42,7 +42,7 @@
 					document.getElementById("tele"+str).innerHTML= xmlDoc.getElementsByTagName("tele")[0].childNodes[0].nodeValue;
 				}else{
 					document.getElementById("state"+str).innerHTML= xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue;
-				}
+				} // since the applicant may have multi degrees so we need to create the tag dynamically
 				for (count_degree = 0 ; count_degree < num ; count_degree++) {
 					document.getElementById("major"+str+count_degree).innerHTML= xmlDoc.getElementsByTagName("major"+count_degree)[0].childNodes[0].nodeValue;
 					document.getElementById("title"+str+count_degree).innerHTML= xmlDoc.getElementsByTagName("title"+count_degree)[0].childNodes[0].nodeValue;
@@ -53,9 +53,11 @@
 				}
 			}
 		}
-		xmlHttp.open("GET", url, true);
+		xmlHttp.open("GET", url, true); // send the request to the server
 		xmlHttp.send();
 	}
+	// this function is for hide the application and show the show application button 
+	// by using the div display = block and none 
 	// str: applicant id, num: number of the degree for that particular applicant
 	function hideapp(str,num)
 	{
@@ -110,11 +112,11 @@
 				}
 			}
 		}
-		xmlHttp.open("GET", url, true);
+		xmlHttp.open("GET", url, true); // send the request to the server
 		xmlHttp.send();
 		
 	}
-	
+	// ajax basic function
 	function GetXmlHttpObject() {
 		var xmlHttp = null;
 		try {
@@ -212,12 +214,8 @@
 				<%out.print(FullName + " ") ; %><td><input type="button" value="Hide Application"  
 				    onclick="hideapp(<%=Integer.toString(rs.getInt(1))%>,<%=Integer.toString(count)%>)"/></td>
 				</div>
-				<% 
-				//out.println("<br>") ;
-				
-				
 			
-			%>
+		
 			<!--  this are html codes for creating mult div tags. 
 			The default setting for displaying is none which is not shown at the beginning  -->
 <div id="displayPage<%=rs.getInt(1)%>" style="display: none"> 
@@ -238,7 +236,7 @@
 <%
 			num = 0 ; // reset 0 for every applicant
 			// Creating the multi degree since the applicant may have more than one degree
-			while ( num < count ) {
+			while ( num < count ) { 
 %>
 			<span id ="uni<%=rs.getInt(1)%><%=num%>"></span><br>
 			<span id ="major<%=rs.getInt(1)%><%=num%>"></span><br>

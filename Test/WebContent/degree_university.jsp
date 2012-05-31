@@ -142,14 +142,16 @@ University <%=counter %> in <%=loc %>:
 
 </table>
 If your university is not listed above, please enter it in the text box below: <br>
-<input type="text" name="university" id="university" "/> <!--  "onfocusout="detect()"/> -->
+<input type="text" name="university" id="university" "/> 
 <input type="button" value="submit" onclick="detect()"/>
 <script type="text/javascript">
+// these two javascript function checking if the university which is input by the user exist in the list above
+// by using Ajax
 	function detect()
 	{
 		var uni = document.getElementById("university");
-		if (uni != null && uni.value.length != 0){
-			showapp(uni.value);
+		if (uni != null && uni.value.length != 0){ // check if the box is empty or not 
+			showapp(uni.value); // getinto the functio
 		}	
 		
 	}
@@ -160,30 +162,26 @@ If your university is not listed above, please enter it in the text box below: <
 			alert("Your browser does not support AJAX!");
 			return;
 		}
-		//document.getElementById("university").value
 		var url = "university_xml.jsp";
 		url = url + "?uni=" + str;
 		url = url + "&sid=" + Math.random();
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4) {
 				var xmlDoc = xmlHttp.responseXML.documentElement;
-				//alert('ready');
-				//alert(xmlDoc == null);
 				if(xmlDoc != null)
-				{
+				{	// show the text for the user that the university exist already 
 					document.getElementById("test").innerHTML= xmlDoc.getElementsByTagName("test")[0].childNodes[0].nodeValue;
 				}
 				else
 				{
-					window.location = "degree_major.jsp?university=" + str;
+					window.location = "degree_major.jsp?university=" + str ; // load it to next page
 				}
-				//alert("Done");
 			}
 		}
-		xmlHttp.open("GET", url, true);
+		xmlHttp.open("GET", url, true); // send the request to the server
 		xmlHttp.send();
 	}
-	
+	// basic Ajax function
 	function GetXmlHttpObject() {
 		var xmlHttp = null;
 		try {

@@ -12,34 +12,34 @@
 			type="text" name="last" /> <br /> <input type="submit"
 			name="action" value="submit" />
 	</form>
-
+<!-- This javascript function checking the validation of the text box: last name, first name, middle using for loop-->
 <script type="text/JavaScript">
 	function validate() {
 		var first = document.forms["myForm"]["first"].value;
 		var last = document.forms["myForm"]["last"].value;
 		var middle = document.forms["myForm"]["middle"].value;
-		if (first == "" || first == null) {
+		if (first == "" || first == null) { // check if the box of first name is empty or not
 			alert("Please enter your first name");
 			return false;
 		}
-		var iChars = "*|,\":<>[]{}`\';()@&$#%/+=-_~!^&?0123456789.";
+		var iChars = "*|,\":<>[]{}`\';()@&$#%/+=-_~!^&?0123456789."; //store all the special characters
 		for ( var i = 0; i < first.length; i++) {
-			if (iChars.indexOf(first.charAt(i)) != -1) {
+			if (iChars.indexOf(first.charAt(i)) != -1) {// checking illegal character
 				alert("First name contains illegal characters!");
 				return false;
 			}
 		}
-		if (last == "" || last == null) {
+		if (last == "" || last == null) { // check if the box of last name is empty or not
 			alert("Please enter your last name");
 			return false;
 		}
-		for ( var i = 0; i < last.length; i++) {
+		for ( var i = 0; i < last.length; i++) { // checking illegal character
 			if (iChars.indexOf(last.charAt(i)) != -1) {
 				alert("Last name contains illegal characters!");
 				return false;
 			}
 		}
-		for ( var i = 0; i < middle.length; i++) {
+		for ( var i = 0; i < middle.length; i++) { // checking illegal character
 			if (iChars.indexOf(middle.charAt(i)) != -1) {
 				alert("Middle initial contains illegal characters!");
 				return false;

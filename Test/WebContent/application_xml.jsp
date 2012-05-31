@@ -6,6 +6,7 @@
 	String p_id = request.getParameter("id");
 %>
 <%
+	// This xml page displaying the information of the applicant by using SQL query  and JDBC
 	String first_name = "";
 	String last_name = "";
 	String middle_name = "";
@@ -18,6 +19,7 @@
 	String city = "";
 	String areaCode = "";
 	String tele = "";
+	// Creating the Vector for different fields in the degree option
 	Vector<String> major = new Vector<String>() ;
 	Vector<String> title = new Vector<String>() ;
 	Vector<String> year = new Vector<String>() ;
@@ -197,7 +199,7 @@
 
 	}
 %>
-<!-- displaying tag -->
+<!-- displaying tag for showing the application of the applicant-->
 <application> 
 <first>First Name: <%=first_name%></first> 
 <last>Last Name: <%=last_name%></last>
@@ -215,7 +217,7 @@
 <%if (tele.equals("")==false) {%> 
 <tele>Telephone Code: <%=tele%></tele> 
 <%}%> 
-<%while (num < uni.size()) {%>
+<%while (num < uni.size()) { // creating the multi tag for multi degrees%>
 <major<%=num%>>Major: <%=major.elementAt(num)%></major<%=num%>> 
 <title<%=num%>>Title: <%=title.elementAt(num)%></title<%=num%>>
 <month<%=num%>>Month: <%=month.elementAt(num)%></month<%=num%>>
