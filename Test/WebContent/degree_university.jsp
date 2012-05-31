@@ -145,16 +145,25 @@ If your university is not listed above, please enter it in the text box below: <
 <input type="text" name="university" id="university" "/> 
 <input type="button" value="submit" onclick="detect()"/>
 <script type="text/javascript">
-// these two javascript function checking if the university which is input by the user exist in the list above
-// by using Ajax
+    /*
+     * Gets the input from the user in the text box and then passes
+     * the input into showapp()
+     */
 	function detect()
 	{
 		var uni = document.getElementById("university");
-		if (uni != null && uni.value.length != 0){ // check if the box is empty or not 
-			showapp(uni.value); // getinto the functio
+		//Checks if the text box is empty before we call showapp()
+		if (uni != null && uni.value.length != 0){    
+			showapp(uni.value);
 		}	
 		
 	}
+    /*
+     * Calls university_xml.jsp to check if the university name that the user
+     * enters in the text box is one of the links that we have provided.
+     * An error message is sent back from university_xml.jsp if the university
+     * appears on the list and nothing is sent back otherwise.
+     */
 	function showapp(str) {
 		var xmlHttp;
 		xmlHttp = new XMLHttpRequest();
@@ -174,14 +183,16 @@ If your university is not listed above, please enter it in the text box below: <
 				}
 				else
 				{
-					window.location = "degree_major.jsp?university=" + str ; // load it to next page
+					//pass the argument onto the next page
+					window.location = "degree_major.jsp?university=" + str;
 				}
 			}
 		}
-		xmlHttp.open("GET", url, true); // send the request to the server
+		//sends request to the server
+		xmlHttp.open("GET", url, true);
 		xmlHttp.send();
 	}
-	// basic Ajax function
+	
 	function GetXmlHttpObject() {
 		var xmlHttp = null;
 		try {
