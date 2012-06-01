@@ -50,7 +50,7 @@
 			result_pid.clear() ;// reset the result_pid arrayList
 			// write the query for finding the personal (p_id) for specific major 
 			ResultSet degree_id = stmt1
-					.executeQuery("SELECT personal_id from has_degree inner join degrees on has_degree.degree = degrees.d_id where degrees.major = '"
+					.executeQuery("SELECT personal from has_degree inner join degrees on has_degree.degree = degrees.d_id where degrees.major = '"
 							+ m_id_list.get(i) + "'");
 			while (degree_id.next()) {
 	

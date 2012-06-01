@@ -38,6 +38,7 @@
 				document.getElementById("zip"+str).innerHTML= xmlDoc.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
 				document.getElementById("area"+str).innerHTML= xmlDoc.getElementsByTagName("area")[0].childNodes[0].nodeValue;
 				
+				alert(xmlDoc.getElementsByTagName("state")[0] == null)
 				if(xmlDoc.getElementsByTagName("state")[0] == null){
 					document.getElementById("tele"+str).innerHTML= xmlDoc.getElementsByTagName("tele")[0].childNodes[0].nodeValue;
 				}else{
@@ -194,7 +195,7 @@
 				count = 0 ;
 				// count how many degree does the current applicant have.
 				rs_pid = stmt2
-				.executeQuery("SELECT degree FROM has_degree where personal_id ='"
+				.executeQuery("SELECT degree FROM has_degree where personal ='"
 						+ rs.getString(1) + "'");
 				while (rs_pid.next()) {
 					count++ ;
